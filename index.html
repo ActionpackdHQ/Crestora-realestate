@@ -229,7 +229,9 @@
       line-height: .9;
       text-transform: uppercase;
       color: transparent;
-      -webkit-text-stroke: 2px #fff;
+      -webkit-text-stroke: 1.5px rgba(21, 23, 23, 0.72);
+      paint-order: stroke fill;
+      filter: drop-shadow(0 0 0.5px rgba(21, 23, 23, 0.35));
     }
     .hero-overlay {
       position: absolute; left: 0; right: 0; bottom: 0; z-index: 4;
@@ -976,24 +978,6 @@
     }
     @media (min-width: 768px) { .assistant-card p { font-size: 2.2rem; } }
 
-    .assist-fab {
-      position: fixed; right: 2rem; bottom: 2rem; z-index: 60;
-      display: inline-flex; align-items: center; gap: 1rem;
-      padding: 1.4rem 2rem; border-radius: 999px;
-      background: var(--ink); color: #fff;
-      font-size: 1.5rem; font-weight: 600;
-      box-shadow: 0 1.2rem 3rem rgba(21,23,23,.28);
-      transition: transform .35s var(--ease), box-shadow .35s ease;
-    }
-    @media (min-width: 768px) {
-      .assist-fab { right: 3rem; bottom: 3rem; font-size: 1.7rem; padding: 1.6rem 2.4rem; }
-    }
-    .assist-fab:hover { transform: translateY(-2px); box-shadow: 0 1.6rem 3.6rem rgba(21,23,23,.34); }
-    .assist-fab-dot {
-      width: .9rem; height: .9rem; border-radius: 50%; background: #7dffa0;
-      box-shadow: 0 0 0 .35rem rgba(125,255,160,.2);
-    }
-
     .assist-panel {
       position: fixed; right: 1.5rem; bottom: 8rem; z-index: 61;
       width: min(42rem, calc(100vw - 3rem));
@@ -1039,6 +1023,14 @@
       align-self: flex-end;
       background: var(--ink); color: #fff;
       border-bottom-right-radius: .4rem;
+    }
+    .assist-bubble.bot.typing {
+      color: rgba(21,23,23,.45);
+      font-style: italic;
+    }
+    .assist-bubble.bot.error {
+      color: #8a2b2b;
+      background: #f8ecec;
     }
     .assist-chips {
       display: flex; flex-wrap: wrap; gap: .8rem;
@@ -1097,9 +1089,7 @@
         <a href="#own"><span data-text="Advisors">Advisors</span></a>
         <a href="#own"><span data-text="Careers">Careers</span></a>
         <a href="#features"><span data-text="Insights">Insights</span></a>
-        <a href="#features"><span data-text="Guides">Guides</span></a>
-        <a href="#features"><span data-text="Studio">Studio</span></a>
-        <a href="/agent"><span data-text="AI agent">AI agent</span></a>
+        <a href="/agent"><span data-text="Assistant">Assistant</span></a>
       </nav>
       <div class="header-actions">
         <a class="btn btn-primary" href="https://api.whatsapp.com/send/?phone=918190007072&text=Hi%2C%20I%27d%20like%20to%20enquire%20with%20Crestora.&type=phone_number&app_absent=0" target="_blank" rel="noopener noreferrer">Member Login</a>
@@ -1113,9 +1103,7 @@
     <a href="#own">Advisors</a>
     <a href="#own">Careers</a>
     <a href="#features">Insights</a>
-    <a href="#features">Guides</a>
-    <a href="#features">Studio</a>
-    <a href="/agent">AI agent</a>
+    <a href="/agent">Assistant</a>
     <a href="https://api.whatsapp.com/send/?phone=918190007072&text=Hi%2C%20I%27d%20like%20to%20enquire%20with%20Crestora.&type=phone_number&app_absent=0" target="_blank" rel="noopener noreferrer">Member Login</a>
   </div>
 
@@ -1149,7 +1137,7 @@
           <h1 class="hero-title">Live Where Ambition Settles</h1>
           <p class="hero-sub">Private advisors. Quiet luxury. A refined path from first tour to keys in hand.</p>
           <div class="hero-cta">
-            <a class="btn" href="/agent">Browse Residences</a>
+            <a class="btn" href="https://api.whatsapp.com/send/?phone=918190007072&text=Hi%2C%20I%27d%20like%20to%20enquire%20with%20Crestora.&type=phone_number&app_absent=0" target="_blank" rel="noopener noreferrer">Browse Residences</a>
           </div>
         </div>
       </div>
@@ -1199,7 +1187,7 @@
           <div class="ink-line">Property,</div>
           <div class="ink-line is-em">Reimagined.</div>
         </h2>
-        <a class="btn btn-primary reveal" href="/agent">Begin Exploring</a>
+        <a class="btn btn-primary reveal" href="https://api.whatsapp.com/send/?phone=918190007072&text=Hi%2C%20I%27d%20like%20to%20enquire%20with%20Crestora.&type=phone_number&app_absent=0" target="_blank" rel="noopener noreferrer">Begin Exploring</a>
         <a class="for-agents reveal" href="https://api.whatsapp.com/send/?phone=918190007072&text=Hi%2C%20I%27d%20like%20to%20enquire%20with%20Crestora.&type=phone_number&app_absent=0" target="_blank" rel="noopener noreferrer">For Advisors</a>
       </div>
       <div>
@@ -1240,7 +1228,7 @@
         </h2>
         <p class="ink-line">Crestora invites top advisors into a partnership model — sharing upside so your craft and your compensation rise together.</p>
         <p class="ink-line">Your clients get an AI agent that replies in under a minute, any hour — while you keep mentorship, shared upside, and a brand that treats trust as non-negotiable. This isn’t clock-in brokerage; it’s a practice you grow.</p>
-        <a class="btn btn-primary reveal" href="/agent?intent=advisor">Apply to Crestora</a>
+        <a class="btn btn-primary reveal" href="https://api.whatsapp.com/send/?phone=918190007072&text=Hi%2C%20I%27d%20like%20to%20enquire%20with%20Crestora.&type=phone_number&app_absent=0" target="_blank" rel="noopener noreferrer">Apply to Crestora</a>
       </div>
     </div>
   </section>
@@ -1292,7 +1280,7 @@
 
   <section class="agents-band">
     <p class="reveal"><span class="em">Crestora advisors stay with you through</span> tours, offers, and closing day <span class="em">— steady, sharp, and unhurried.</span></p>
-    <a class="btn btn-ghost reveal" href="/agent">Start with Crestora</a>
+    <a class="btn btn-ghost reveal" href="https://api.whatsapp.com/send/?phone=918190007072&text=Hi%2C%20I%27d%20like%20to%20enquire%20with%20Crestora.&type=phone_number&app_absent=0" target="_blank" rel="noopener noreferrer">Start with Crestora</a>
   </section>
 
   <!-- SUPPORT -->
@@ -1338,14 +1326,14 @@
   </section>
 
   <!-- ASSISTANT -->
-  <section class="assistant-section" id="ai-agent">
+  <section class="assistant-section" id="assistant">
     <div class="container">
       <div class="assistant-card reveal">
         <div class="assistant-pulse" aria-hidden="true"><i></i><i></i><i></i></div>
         <p class="eyebrow">Personal property help</p>
-        <h2>Talk to our <span class="em">AI agent</span></h2>
-        <p>Questions on buying, selling, leasing, budgets, or booking a tour? Our AI agent guides you in seconds — then hands you to WhatsApp when you’re ready.</p>
-        <a class="btn btn-primary" href="/agent">Open AI agent →</a>
+        <h2>Ask our <span class="em">assistant</span></h2>
+        <p>Questions on buying, selling, leasing, budgets, or booking a tour? Our AI agent guides you in under a minute — then hands you to WhatsApp when you’re ready.</p>
+        <a class="btn btn-primary" href="/agent">Open assistant →</a>
       </div>
     </div>
   </section>
@@ -1357,7 +1345,7 @@
     </div>
     <div class="outro-inner">
       <h2 class="reveal">Arrive Home. <span class="em">We’ll Shape the Journey.</span></h2>
-      <a class="btn btn-primary reveal" href="/agent" style="background:#fff;color:#151717">Book a Conversation</a>
+      <a class="btn btn-primary reveal" href="https://api.whatsapp.com/send/?phone=918190007072&text=Hi%2C%20I%27d%20like%20to%20enquire%20with%20Crestora.&type=phone_number&app_absent=0" target="_blank" rel="noopener noreferrer" style="background:#fff;color:#151717">Book a Conversation</a>
     </div>
   </section>
 
@@ -1381,7 +1369,7 @@
           <li><a href="#own">Advisors</a></li>
           <li><a href="#own">Careers</a></li>
           <li><a href="#features">Studio</a></li>
-          <li><a href="/agent">AI agent</a></li>
+          <li><a href="/agent">Assistant</a></li>
           <li><a href="https://api.whatsapp.com/send/?phone=918190007072&text=Hi%2C%20I%27d%20like%20to%20enquire%20with%20Crestora.&type=phone_number&app_absent=0" target="_blank" rel="noopener noreferrer">Member Portal</a></li>
         </ul>
         <ul>
@@ -1410,11 +1398,6 @@
       </div>
     </div>
   </footer>
-
-  <a class="assist-fab" href="/agent">
-    <span class="assist-fab-dot" aria-hidden="true"></span>
-    Talk to our AI agent
-  </a>
 
   <script>
     /*
@@ -1750,6 +1733,7 @@
       });
       syncHeader();
     })();
+
   </script>
 </body>
 </html>
