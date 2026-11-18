@@ -1,0 +1,7 @@
+{
+  "name": "crestora-static",
+  "private": true,
+  "dependencies": {
+    "@google/genai": "^2.32.0"
+  }
+}

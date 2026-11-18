@@ -1,0 +1,1755 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CRESTORA — Homes, Elevated</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <style>
+    :root {
+      --ink: #151717;
+      --em: #b3b3b3;
+      --bg: #fff;
+      --soft: #f1f1f1;
+      --line: #383a3a;
+      --hair: rgba(21,23,23,.07);
+      --ease: cubic-bezier(.16,1,.3,1);
+      --overshoot: cubic-bezier(.34,3.56,.64,1);
+      --font: "Instrument Sans", system-ui, sans-serif;
+      --serif: Lora, Georgia, serif;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 10px; height: 100%; }
+    @media (min-width: 768px) {
+      html { font-size: clamp(8px, .5208333333vw, 10px); }
+    }
+    @media (max-width: 767px) {
+      html { font-size: clamp(10px, 2.6666666667vw, 14px); }
+    }
+    body {
+      font-family: var(--font);
+      color: var(--ink);
+      background: var(--bg);
+      line-height: 1.15;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+    .em { color: var(--em); }
+    .container { padding: 0 2.5rem; margin: 0 auto; max-width: 1920px; }
+    @media (min-width: 768px) { .container { padding: 0 10rem; } }
+
+    /* ——— HEADER ——— */
+    .header {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+      transition: background-color .3s, color 1s;
+      color: var(--ink);
+    }
+    .header.is-transparent { background: transparent; }
+    .header.is-solid { background: #fff; }
+    .header.is-dark { background: var(--ink); color: #fff; }
+    .header-inner {
+      min-height: 8.4rem;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+    }
+    @media (min-width: 768px) {
+      .header-inner {
+        min-height: 9.8rem;
+        grid-template-columns: 25rem 1fr 25rem;
+      }
+    }
+    .logo-word {
+      font-family: var(--font);
+      font-weight: 700;
+      font-size: 2rem;
+      letter-spacing: .08em;
+      line-height: 1;
+      text-transform: uppercase;
+    }
+    @media (min-width: 768px) { .logo-word { font-size: 2.2rem; } }
+    .nav {
+      display: none;
+      justify-content: center;
+      gap: 4rem;
+    }
+    @media (min-width: 768px) { .nav { display: flex; } }
+    .nav a {
+      font-weight: 500;
+      font-size: 1.8rem;
+      line-height: 1.25;
+      overflow: hidden;
+      position: relative;
+    }
+    @media (min-width: 768px) { .nav a { font-size: 2rem; } }
+    .nav a span {
+      display: block;
+      transition: transform .9s var(--ease);
+    }
+    .nav a span::after {
+      content: attr(data-text);
+      position: absolute; top: 105%; left: 0; right: 0;
+    }
+    .nav a:hover span { transform: translateY(-105%); }
+    .header-actions { display: flex; justify-content: flex-end; align-items: center; gap: 1.2rem; }
+    .header-actions .btn-primary { white-space: nowrap; }
+    @media (max-width: 767px) {
+      .header-actions .btn-primary { display: none; }
+    }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      border-radius: 100px;
+      padding: 1.4rem 2.4rem;
+      font-size: 1.6rem; font-weight: 500; line-height: 1.5;
+      transition: transform .3s;
+    }
+    @media (min-width: 768px) {
+      .btn { font-size: 1.8rem; line-height: 1.4; padding: 1.54rem 3rem; }
+    }
+    .btn:hover { transform: scaleX(1.02); transition: transform .7s var(--overshoot); }
+    .btn-primary { background: var(--ink); color: #fff; }
+    .header.is-dark .btn-primary { background: #fff; color: var(--ink); }
+    .btn-secondary {
+      background: transparent; color: inherit;
+      border: 1px solid rgba(21,23,23,.3);
+    }
+    .header.is-dark .btn-secondary { border-color: hsla(0,0%,100%,.5); color: #fff; }
+    .btn-ghost {
+      background: transparent; color: #fff;
+      border: 1px solid hsla(0,0%,100%,.5);
+    }
+    .burger { display: flex; width: 4rem; height: 4rem; align-items: center; justify-content: center; }
+    @media (min-width: 768px) { .burger { display: none; } }
+    .burger span { width: 2.2rem; height: 2px; background: currentColor; position: relative; }
+    .burger span::before, .burger span::after {
+      content: ""; position: absolute; left: 0; right: 0; height: 2px; background: currentColor;
+    }
+    .burger span::before { top: -7px; } .burger span::after { top: 7px; }
+    .mobile-nav {
+      display: none; position: fixed; inset: 0; z-index: 49;
+      background: #fff; color: var(--ink);
+      padding: 12rem 2.5rem 4rem;
+      flex-direction: column; gap: 2.4rem;
+    }
+    .mobile-nav.open { display: flex; }
+    .mobile-nav a { font-size: 3.2rem; font-weight: 500; }
+
+    /* ——— HERO (sticky scroll stage) ——— */
+    .hero {
+      position: relative;
+      height: 220vh;
+      margin-top: -8.4rem;
+      margin-bottom: -35vh;
+    }
+    @media (min-width: 768px) {
+      .hero { height: 280vh; margin-top: -9.8rem; margin-bottom: -40vh; }
+    }
+    .hero-sticky {
+      position: sticky; top: 0; height: 100vh; overflow: hidden;
+      background: linear-gradient(180deg, #8ebce6 0%, #c5e0f6 45%, #eef6fc 100%);
+    }
+    .hero-bg { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+    .hero-back {
+      position: absolute; left: 50%; bottom: 0;
+      width: 140%; transform: translateX(-50%);
+      opacity: .5; filter: blur(1px);
+    }
+    .hero-back img { width: 100%; height: auto; }
+    .hero-house {
+      position: absolute; top: 42vh; left: 50%;
+      width: min(115vw, 118rem);
+      height: auto;
+      z-index: 1;
+      transform-origin: top center;
+      will-change: transform;
+      filter: drop-shadow(0 30px 50px rgba(0,0,0,.35));
+    }
+    @media (min-width: 768px) {
+      .hero-house { top: 38vh; width: min(108vw, 148rem); }
+    }
+    .hero-house img { width: 100%; height: auto; object-fit: contain; }
+    .hero-clouds { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
+    .hero-cloud {
+      position: absolute; will-change: transform;
+    }
+    .hero-cloud img { width: 100%; height: 100%; object-fit: cover; }
+    .hero-cloud:first-child {
+      top: 33%; left: -30%; width: 70rem; height: 30rem;
+    }
+    .hero-cloud:last-child {
+      top: 28%; right: -25%; width: 58rem; height: 25rem;
+    }
+    @media (min-width: 768px) {
+      .hero-cloud:first-child { top: 25%; left: -18%; width: 112rem; height: 48rem; }
+      .hero-cloud:last-child { top: 20%; right: -18%; width: 94rem; height: 40rem; }
+    }
+    .hero-smoke {
+      position: absolute; left: 0; right: 0; bottom: 0;
+      height: 45rem; z-index: 3;
+      transform: translateY(70%);
+      will-change: transform;
+    }
+    @media (min-width: 768px) { .hero-smoke { height: 62rem; } }
+    .hero-smoke img { width: 100%; height: 100%; object-fit: cover; object-position: top center; }
+    .hero-composite {
+      position: absolute; inset: 0; z-index: 2; opacity: 0;
+      display: grid; place-items: center;
+      pointer-events: none;
+    }
+    .hero-composite-word {
+      font-family: var(--font);
+      font-weight: 700;
+      font-size: clamp(4.8rem, 14vw, 18rem);
+      letter-spacing: -.04em;
+      line-height: .9;
+      text-transform: uppercase;
+      color: transparent;
+      background: url("assets/house.png") center 40% / cover no-repeat;
+      -webkit-background-clip: text;
+      background-clip: text;
+      filter: drop-shadow(0 20px 40px rgba(0,0,0,.25));
+    }
+    .hero-logo-stroke {
+      position: absolute; inset: 0; z-index: 2;
+      display: grid; place-items: center; opacity: 0; pointer-events: none;
+    }
+    .hero-logo-stroke span {
+      font-family: var(--font);
+      font-weight: 700;
+      font-size: clamp(4.8rem, 14vw, 18rem);
+      letter-spacing: -.04em;
+      line-height: .9;
+      text-transform: uppercase;
+      color: transparent;
+      -webkit-text-stroke: 2px #fff;
+    }
+    .hero-overlay {
+      position: absolute; left: 0; right: 0; bottom: 0; z-index: 4;
+      height: 10rem;
+      background: linear-gradient(180deg, rgba(255,255,255,0), #fff);
+      pointer-events: none;
+    }
+    @media (min-width: 768px) { .hero-overlay { height: 30.9rem; } }
+    .hero-content {
+      position: relative; z-index: 5;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: flex-start;
+      height: 100%; text-align: center;
+      padding: 12rem 2.5rem 0;
+      pointer-events: none;
+    }
+    .hero-content > div { pointer-events: auto; }
+    @media (min-width: 768px) {
+      .hero-content { padding: clamp(11rem, 14vh, 15rem) 2.5rem 0; }
+    }
+    .hero-title {
+      font-weight: 700;
+      font-size: clamp(3.6rem, 8vw, 5.4rem);
+      line-height: .98;
+      letter-spacing: -.02em;
+      color: var(--ink);
+      max-width: 14ch;
+      margin: 0 auto;
+    }
+    @media (min-width: 768px) {
+      .hero-title { font-size: clamp(7.2rem, 8.5vw, 11rem); max-width: 15ch; }
+    }
+    .hero-sub {
+      margin: 1.6rem auto 0;
+      font-weight: 500;
+      font-size: 1.6rem;
+      line-height: 1.45;
+      max-width: 34rem;
+      color: rgba(21,23,23,.72);
+    }
+    @media (min-width: 768px) {
+      .hero-sub {
+        font-size: 2.6rem;
+        line-height: 1.35;
+        letter-spacing: -.01em;
+        margin-top: 2.4rem;
+        max-width: 58rem;
+      }
+    }
+    .hero-cta { margin-top: 2.8rem; }
+    @media (min-width: 768px) { .hero-cta { margin-top: 3.6rem; } }
+    .hero-cta .btn {
+      background: rgba(255,255,255,.55);
+      border: 1px solid rgba(255,255,255,.7);
+      backdrop-filter: blur(10px);
+      color: var(--ink);
+    }
+
+    /* ——— WHY ——— */
+    .why {
+      position: relative; z-index: 2;
+      background: #fff;
+      padding: 5rem 0 3rem;
+    }
+    @media (min-width: 768px) { .why { padding: 7rem 0 4rem; } }
+    .why-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+    @media (min-width: 768px) {
+      .why-grid { grid-template-columns: 28rem 1fr; gap: 6rem; }
+    }
+    .why-label {
+      font-weight: 600; font-size: 1.6rem; line-height: 1.4;
+    }
+    @media (min-width: 768px) { .why-label { font-size: 2rem; } }
+    .why-label .dim { display: block; margin-bottom: .6rem; }
+    .why h2 {
+      font-weight: 500;
+      font-size: 3.6rem;
+      line-height: 1.08;
+      letter-spacing: -.02em;
+      max-width: 18ch;
+    }
+    @media (min-width: 768px) { .why h2 { font-size: 7.2rem; letter-spacing: -.04em; } }
+    .why p {
+      margin-top: 2rem;
+      font-weight: 500;
+      font-size: 1.6rem;
+      line-height: 1.5;
+      max-width: 48rem;
+    }
+    .ink-line .ink-word {
+      display: inline-block;
+      color: rgba(21,23,23,.18);
+      will-change: color, opacity;
+    }
+    .ink-line.is-dim .ink-word { color: rgba(21,23,23,.16); }
+    @media (min-width: 768px) {
+      .why p { font-size: 2.4rem; letter-spacing: -.01em; max-width: 64rem; }
+    }
+    .city-strip {
+      margin-top: 6rem;
+      height: 28rem;
+      overflow: hidden;
+      border-radius: .4rem;
+    }
+    @media (min-width: 768px) { .city-strip { height: 52rem; margin-top: 10rem; } }
+    .city-strip img,
+    .city-strip video {
+      width: 100%; height: 100%; object-fit: cover;
+      display: block;
+      border-radius: inherit;
+      will-change: transform;
+    }
+
+    /* ——— IDENTITY ——— */
+    .identity {
+      background: #fff;
+      padding: 4rem 0;
+      text-align: center;
+    }
+    @media (min-width: 768px) { .identity { padding: 7rem 0; } }
+    .identity h2 {
+      font-weight: 500;
+      font-size: 3.2rem;
+      letter-spacing: -.02em;
+      line-height: 1.15;
+      max-width: 22ch;
+      margin: 0 auto;
+    }
+    @media (min-width: 768px) { .identity h2 { font-size: 6.4rem; max-width: 24ch; } }
+    .chevrons {
+      display: flex;
+      justify-content: center;
+      align-items: stretch;
+      width: 100%;
+      margin: 3.5rem 0;
+      padding: 0 1.2rem;
+      height: 32rem;
+      max-width: none;
+      box-sizing: border-box;
+    }
+    @media (min-width: 768px) {
+      .chevrons {
+        height: min(56rem, 58vh);
+        margin: 5.5rem 0;
+        padding: 0 2.5rem;
+      }
+    }
+    @media (min-width: 1200px) {
+      .chevrons { padding: 0 4rem; height: min(62rem, 62vh); }
+    }
+    .chev {
+      flex: 1 1 0;
+      width: auto;
+      min-width: 0;
+      max-width: 42rem;
+      height: 100%;
+      margin-left: -3.5%;
+      clip-path: polygon(0 0, 72% 0, 100% 50%, 72% 100%, 0 100%, 28% 50%);
+      overflow: hidden;
+      box-shadow: 0 2rem 5rem rgba(0,0,0,.15);
+    }
+    .chev:first-child { margin-left: 0; }
+    .chev img {
+      width: 100%; height: 100%; object-fit: cover;
+      transform: scale(1.12);
+      backface-visibility: hidden;
+      will-change: transform;
+    }
+    .identity-body {
+      max-width: 72rem;
+      margin: 0 auto;
+      font-weight: 500;
+      font-size: 1.6rem;
+      line-height: 1.5;
+      color: rgba(21,23,23,.6);
+    }
+    @media (min-width: 768px) {
+      .identity-body { font-size: 2.6rem; letter-spacing: -.01em; max-width: 110rem; }
+    }
+
+    /* ——— REWIRED ——— */
+    .rewired {
+      padding: 4rem 0;
+      background: var(--soft);
+    }
+    @media (min-width: 768px) { .rewired { padding: 9rem 0; } }
+    .rewired-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 5rem;
+    }
+    @media (min-width: 768px) {
+      .rewired-grid { grid-template-columns: 1fr 1fr; gap: 8rem; align-items: start; }
+    }
+    .rewired-title {
+      font-weight: 500;
+      font-size: 4.4rem;
+      line-height: 1;
+      letter-spacing: -.02em;
+    }
+    @media (min-width: 768px) {
+      .rewired-title { font-size: 7.2rem; letter-spacing: -.04em; }
+    }
+    .rewired-left { display: flex; flex-direction: column; align-items: flex-start; gap: 3rem; }
+    @media (min-width: 768px) { .rewired-left { gap: 4rem; } }
+    .rewired-label {
+      font-weight: 500; font-size: 2.2rem; line-height: 1.15; margin-bottom: 3rem;
+    }
+    @media (min-width: 768px) {
+      .rewired-label { font-size: 3.2rem; line-height: 1.3; letter-spacing: -.01em; }
+    }
+    .step {
+      border-bottom: 1px solid var(--hair);
+      padding: 3rem 0;
+      font-weight: 500;
+      font-size: 2.2rem;
+      line-height: 1.15;
+    }
+    .step:first-of-type { border-top: 1px solid var(--hair); }
+    .step::before {
+      content: attr(data-index);
+      display: block;
+      font-size: 1.4rem;
+      color: var(--em);
+      margin-bottom: 1.5rem;
+    }
+    @media (min-width: 768px) {
+      .step {
+        font-size: 4.4rem;
+        letter-spacing: -.03em;
+        display: flex; align-items: center; gap: 5rem;
+      }
+      .step::before { margin-bottom: 0; font-size: 2rem; min-width: 3rem; }
+    }
+    .step p {
+      font-size: 1.5rem;
+      font-weight: 500;
+      margin-top: 1rem;
+      max-width: 40ch;
+    }
+    @media (min-width: 768px) {
+      .step p { font-size: 2rem; margin-top: 0; }
+    }
+    .step strong.ink-line { font-weight: inherit; }
+    .for-agents {
+      margin-top: 2rem;
+      font-size: 1.6rem;
+      font-weight: 500;
+      color: var(--em);
+    }
+
+    /* ——— OWN ——— */
+    .own {
+      padding: 6rem 0;
+      background: #fff;
+    }
+    @media (min-width: 768px) { .own { padding: 9rem 0; } }
+    .own-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+    @media (min-width: 768px) {
+      .own-grid { grid-template-columns: 1.05fr .95fr; gap: 8rem; }
+    }
+    .own-visual {
+      position: relative;
+      overflow: hidden;
+      border-radius: .6rem;
+      aspect-ratio: 5/4;
+      isolation: isolate;
+    }
+    .own-visual img {
+      width: 100%; height: 100%; object-fit: cover;
+      transform: scale(1.18);
+      will-change: transform;
+      backface-visibility: hidden;
+    }
+    .own-visual::before {
+      content: "";
+      position: absolute; inset: 0; z-index: 1;
+      pointer-events: none;
+      background: rgba(21,23,23,.18);
+      transition: opacity .8s var(--ease);
+    }
+    .own-visual:hover::before { opacity: 0; }
+    .own-visual::after {
+      content: "";
+      position: absolute; inset: 0; z-index: 2;
+      pointer-events: none;
+      background: linear-gradient(120deg, transparent 35%, rgba(255,255,255,.12) 48%, transparent 62%);
+      background-size: 220% 100%;
+      background-position: 120% 0;
+      mix-blend-mode: soft-light;
+      transition: background-position 1.2s var(--ease);
+    }
+    .own-visual:hover::after { background-position: -20% 0; }
+    .own .eyebrow {
+      font-size: 1.6rem; font-weight: 600; margin-bottom: 2rem;
+    }
+    .own h2 {
+      font-weight: 500;
+      font-size: 4rem;
+      line-height: 1.05;
+      letter-spacing: -.03em;
+      margin-bottom: 2.4rem;
+    }
+    @media (min-width: 768px) { .own h2 { font-size: 7.2rem; } }
+    .own h2 .ink-line { display: inline; }
+    .own h2 .ink-line.is-em { display: inline; }
+    .own p {
+      font-weight: 500;
+      font-size: 1.6rem;
+      line-height: 1.55;
+      margin-bottom: 1.4rem;
+      max-width: 52rem;
+    }
+    @media (min-width: 768px) { .own p { font-size: 2.2rem; } }
+
+    /* ——— SERVICES ——— */
+    .services {
+      padding: 6rem 0;
+      color: #fff;
+      background: var(--ink);
+    }
+    @media (min-width: 768px) { .services { padding: 15rem 0; } }
+    .services-head {
+      display: grid;
+      margin: 0 0 6rem;
+    }
+    @media (min-width: 768px) {
+      .services-head {
+        grid-template-columns: auto 1fr;
+        margin: 0 0 10rem;
+        align-items: end;
+      }
+    }
+    .services-caption {
+      font-weight: 600; font-size: 2rem; line-height: 140%;
+      display: none;
+    }
+    @media (min-width: 768px) { .services-caption { display: block; } }
+    .services-title {
+      font-weight: 500;
+      font-size: 4.4rem;
+      line-height: 105%;
+      letter-spacing: -.02em;
+      text-align: left;
+    }
+    @media (min-width: 768px) {
+      .services-title { font-size: 7.2rem; letter-spacing: -.03em; text-align: right; }
+    }
+    .service-items { border-bottom: 1px solid var(--line); counter-reset: item-num; }
+    .service-item {
+      position: relative;
+      display: block;
+      width: 100%;
+      height: 40rem;
+      overflow: hidden;
+      color: inherit;
+      border-top: 1px solid var(--line);
+      text-align: left;
+    }
+    .service-item > .inner {
+      position: relative; z-index: 2;
+      display: grid;
+      height: 100%;
+      padding: 4rem 0 3.5rem;
+      grid-template-columns: 4.6rem 1fr;
+      gap: 2rem;
+      align-content: space-between;
+    }
+    @media (min-width: 768px) {
+      .service-item > .inner {
+        grid-template-columns: 4.6rem auto 1fr;
+        gap: 6rem;
+        padding-top: 6rem;
+        padding-bottom: 5.2rem;
+        align-items: start;
+      }
+    }
+    .service-bg {
+      position: absolute; inset: 0;
+      background: #1a1c1c;
+      transform: scale(1.05);
+      opacity: 0;
+      clip-path: inset(100% 0 0 0);
+      transition: opacity .4s, transform 4s cubic-bezier(.5,1,.89,1), clip-path 1s var(--ease);
+    }
+    .service-bg img { width: 100%; height: 100%; object-fit: cover; }
+    .service-item:hover .service-bg {
+      transform: scale(1);
+      opacity: .4;
+      clip-path: inset(0);
+    }
+    .s-num {
+      display: grid; place-items: center;
+      width: 3.6rem; height: 3.6rem;
+      border: 1px solid; border-radius: 50%;
+      font-weight: 500; font-size: 1.4rem;
+    }
+    @media (min-width: 768px) {
+      .s-num { width: 4.6rem; height: 4.6rem; font-size: 1.6rem; }
+    }
+    .s-num::before { content: counter(item-num); counter-increment: item-num; }
+    .s-text {
+      font-weight: 500;
+      font-size: 1.6rem;
+      line-height: 150%;
+      max-width: 40rem;
+      color: rgba(255,255,255,.75);
+    }
+    @media (min-width: 768px) {
+      .s-text { font-size: 2.4rem; letter-spacing: -.01em; text-wrap: balance; }
+    }
+    .s-more {
+      grid-column: 1 / -1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: clamp(5.2rem, 14.5vw, 8rem);
+      line-height: 95%;
+      letter-spacing: -.04em;
+      white-space: nowrap;
+      max-width: 100%;
+      overflow: hidden;
+    }
+    @media (min-width: 768px) {
+      .s-more {
+        grid-column: auto;
+        align-self: start;
+        font-size: clamp(10rem, 18vw, 24rem);
+        letter-spacing: -.05em;
+        justify-self: end;
+        gap: 2rem;
+        min-width: 40%;
+      }
+    }
+    .s-more span { position: relative; display: inline-block; }
+    .s-more span::after {
+      content: "";
+      position: absolute; left: .085em; right: 0; bottom: 0;
+      border-top: .0333em solid;
+      transform: scaleX(0);
+      transform-origin: left center;
+      transition: transform 1s var(--ease);
+    }
+    .service-item:hover .s-more span::after { transform: scaleX(1); }
+    .s-more svg {
+      height: .55em; width: .55em;
+      opacity: 0;
+      transform: translateX(-10%);
+      transition: opacity .4s, transform .8s var(--ease);
+    }
+    .service-item:hover .s-more svg { opacity: 1; transform: translateX(0); }
+
+    .agents-band {
+      background: var(--ink);
+      color: #fff;
+      text-align: center;
+      padding: 6rem 2.5rem 8rem;
+    }
+    .agents-band p {
+      font-weight: 500;
+      font-size: 2.8rem;
+      line-height: 1.25;
+      max-width: 28em;
+      margin: 0 auto 3rem;
+      letter-spacing: -.02em;
+    }
+    @media (min-width: 768px) { .agents-band p { font-size: 4.8rem; } }
+
+    /* ——— SUPPORT / FEATURES ——— */
+    .features {
+      background: var(--ink);
+      color: #fff;
+      padding: 4rem 0 8rem;
+    }
+    @media (min-width: 768px) { .features { padding: 8rem 0 15rem; } }
+    .features-top {
+      display: grid;
+      gap: 3rem;
+      margin-bottom: 4rem;
+    }
+    @media (min-width: 768px) {
+      .features-top {
+        grid-template-columns: 1.1fr .9fr;
+        gap: 6rem;
+        margin-bottom: 8rem;
+        align-items: end;
+      }
+    }
+    .features h2 {
+      font-weight: 500;
+      font-size: 4rem;
+      line-height: 1.05;
+      letter-spacing: -.03em;
+    }
+    @media (min-width: 768px) { .features h2 { font-size: 7.2rem; } }
+    .features-top p {
+      font-weight: 500;
+      font-size: 1.6rem;
+      line-height: 1.5;
+      color: rgba(255,255,255,.7);
+      max-width: 48rem;
+      margin-bottom: 2.4rem;
+    }
+    @media (min-width: 768px) { .features-top p { font-size: 2.4rem; } }
+    .feature-cards {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.2rem;
+      perspective: 1200px;
+    }
+    @media (min-width: 768px) {
+      .feature-cards { grid-template-columns: repeat(3, 1fr); gap: 1.6rem; }
+    }
+    .feature-card {
+      position: relative;
+      overflow: hidden;
+      border-radius: .8rem;
+      aspect-ratio: 3/4;
+      min-height: 42rem;
+      isolation: isolate;
+    }
+    .feature-card img {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%; object-fit: cover;
+      transform: scale(1.12);
+      will-change: transform;
+      backface-visibility: hidden;
+    }
+    .feature-card .shade {
+      position: absolute; inset: 0; z-index: 1;
+      background: linear-gradient(180deg, rgba(21,23,23,.22) 0%, transparent 38%, rgba(21,23,23,.88) 100%);
+      transition: opacity .5s ease;
+    }
+    .feature-card .sheen {
+      position: absolute; inset: 0; z-index: 2;
+      pointer-events: none;
+      background: linear-gradient(115deg, transparent 30%, rgba(255,255,255,.16) 48%, transparent 64%);
+      background-size: 220% 100%;
+      background-position: 130% 0;
+      mix-blend-mode: soft-light;
+      opacity: .65;
+      transition: background-position 1.15s var(--ease), opacity .5s ease;
+    }
+    .feature-card .meta {
+      position: absolute; left: 2rem; right: 2rem; bottom: 2.4rem; z-index: 3;
+    }
+    .feature-card h3 {
+      font-weight: 500;
+      font-size: 2.4rem;
+      letter-spacing: -.02em;
+      margin-bottom: 1.2rem;
+    }
+    @media (min-width: 768px) { .feature-card h3 { font-size: 3.2rem; } }
+    .feature-card .more {
+      font-size: 1.6rem; font-weight: 500; opacity: .75;
+      display: inline-flex; align-items: center; gap: .4rem;
+      transition: opacity .4s ease;
+    }
+    .feature-card:hover .shade { opacity: .85; }
+    .feature-card:hover .sheen {
+      background-position: -30% 0;
+      opacity: 1;
+    }
+    .feature-card:hover .more { opacity: 1; }
+
+    /* ——— OUTRO ——— */
+    .outro {
+      position: relative;
+      display: flex; align-items: center; justify-content: center;
+      height: 55rem;
+      color: #fff;
+      overflow: hidden;
+    }
+    @media (min-width: 768px) { .outro { height: 90rem; } }
+    .outro-bg { position: absolute; inset: 0; }
+    .outro-bg::after {
+      content: ""; position: absolute; inset: 0;
+      background: rgba(21,23,23,.3);
+    }
+    .outro-bg img { width: 100%; height: 100%; object-fit: cover; }
+    .outro-inner { position: relative; text-align: center; padding: 0 2.5rem; }
+    .outro h2 {
+      font-weight: 500;
+      font-size: 3rem;
+      line-height: 115%;
+      letter-spacing: -.01em;
+      text-wrap: balance;
+      margin-bottom: 3rem;
+    }
+    @media (min-width: 768px) { .outro h2 { font-size: 7.2rem; } }
+    .outro h2 .em { color: hsla(0,0%,100%,.7); }
+
+    /* ——— FOOTER ——— */
+    .footer {
+      background: var(--ink);
+      color: #fff;
+      padding: 6rem 0 4rem;
+    }
+    @media (min-width: 768px) { .footer { padding: 15rem 0 5rem; } }
+    .footer-grid {
+      display: grid;
+      gap: 5rem;
+      grid-template-areas: "newsletter" "links" "contact" "brand";
+    }
+    @media (min-width: 768px) {
+      .footer-grid {
+        grid-template-columns: 1.2fr .8fr;
+        grid-template-areas: "newsletter links" "contact contact" "brand brand";
+        justify-content: space-between;
+      }
+    }
+    .newsletter { grid-area: newsletter; }
+    .newsletter h4 {
+      font-size: 2.2rem; font-weight: 500; margin-bottom: 2.2rem; line-height: 1.3;
+    }
+    @media (min-width: 768px) { .newsletter h4 { font-size: 3.2rem; margin-bottom: 2.8rem; } }
+    .newsletter-form {
+      display: flex; align-items: center;
+      border-bottom: 1px solid rgba(255,255,255,.35);
+      max-width: 52rem;
+      padding-bottom: 1rem;
+      gap: 1.2rem;
+    }
+    .newsletter-form input {
+      flex: 1; background: transparent; border: 0; outline: 0;
+      color: #fff; font-size: 2rem; padding: .8rem 0;
+      font-family: inherit; line-height: 1.4;
+    }
+    @media (min-width: 768px) { .newsletter-form input { font-size: 2.4rem; } }
+    .newsletter-form input::placeholder { color: rgba(255,255,255,.4); }
+    .newsletter-form button {
+      font-size: 2.4rem; line-height: 1; opacity: .85; flex-shrink: 0;
+    }
+    @media (min-width: 768px) { .newsletter-form button { font-size: 2.8rem; } }
+    .newsletter-form button:hover { opacity: 1; }
+    .foot-links {
+      grid-area: links;
+      display: flex; gap: 6rem;
+    }
+    @media (min-width: 768px) { .foot-links { gap: 8rem; } }
+    .foot-links ul { list-style: none; display: flex; flex-direction: column; gap: 1.6rem; }
+    @media (min-width: 768px) { .foot-links ul { gap: 1.8rem; } }
+    .foot-links a {
+      font-size: 2rem; font-weight: 500; color: rgba(255,255,255,.72); line-height: 1.35;
+    }
+    @media (min-width: 768px) { .foot-links a { font-size: 2.4rem; } }
+    .foot-links a:hover { color: #fff; }
+    .foot-contact {
+      grid-area: contact;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2.8rem;
+      padding-top: 2.4rem;
+      border-top: 1px solid rgba(255,255,255,.12);
+      font-size: 1.9rem;
+      line-height: 1.45;
+      color: rgba(255,255,255,.72);
+    }
+    @media (min-width: 768px) {
+      .foot-contact {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 4rem;
+        font-size: 2.2rem;
+        padding-top: 3.2rem;
+      }
+    }
+    .foot-contact strong {
+      display: block; color: #fff; margin-bottom: 1rem;
+      font-size: 1.5rem; letter-spacing: .08em; text-transform: uppercase; font-weight: 600;
+    }
+    @media (min-width: 768px) {
+      .foot-contact strong { font-size: 1.7rem; margin-bottom: 1.2rem; }
+    }
+    .foot-contact a { color: rgba(255,255,255,.85); }
+    .foot-contact a:hover { color: #fff; }
+    .foot-brand {
+      grid-area: brand;
+      margin-top: 4rem;
+      text-align: center;
+    }
+    .foot-brand .logo-word {
+      font-size: clamp(4rem, 14vw, 16rem);
+      letter-spacing: -.02em;
+      color: #fff;
+      display: block;
+      text-align: center;
+    }
+
+    /* ——— ASSISTANT ——— */
+    .assistant-section {
+      background: var(--soft);
+      padding: 6rem 0 8rem;
+    }
+    @media (min-width: 768px) { .assistant-section { padding: 10rem 0 12rem; } }
+    .assistant-card {
+      max-width: 72rem;
+      margin: 0 auto;
+      text-align: center;
+      background: #fff;
+      border: 1px solid var(--hair);
+      border-radius: 2rem;
+      padding: 4rem 2.5rem;
+      box-shadow: 0 2rem 6rem rgba(21,23,23,.06);
+    }
+    @media (min-width: 768px) { .assistant-card { padding: 6rem 5rem; } }
+    .assistant-pulse {
+      display: inline-flex; gap: .7rem; align-items: center; justify-content: center;
+      width: 5.6rem; height: 5.6rem; border-radius: 50%;
+      border: 1px solid rgba(21,23,23,.12);
+      margin-bottom: 2rem;
+    }
+    .assistant-pulse i {
+      width: .7rem; height: .7rem; border-radius: 50%; background: var(--ink);
+      animation: pulseDot 1.4s ease-in-out infinite;
+    }
+    .assistant-pulse i:nth-child(2) { animation-delay: .2s; opacity: .7; }
+    .assistant-pulse i:nth-child(3) { animation-delay: .4s; opacity: .45; }
+    @keyframes pulseDot {
+      0%, 100% { transform: scale(.85); opacity: .35; }
+      50% { transform: scale(1.15); opacity: 1; }
+    }
+    .assistant-card .eyebrow {
+      font-size: 1.5rem; font-weight: 600; color: var(--em); margin-bottom: 1.2rem;
+      letter-spacing: .04em; text-transform: uppercase;
+    }
+    .assistant-card h2 {
+      font-weight: 500; font-size: 3.6rem; line-height: 1.1; letter-spacing: -.03em;
+      margin-bottom: 1.6rem;
+    }
+    @media (min-width: 768px) { .assistant-card h2 { font-size: 5.6rem; } }
+    .assistant-card h2 .em { color: var(--em); }
+    .assistant-card p {
+      font-size: 1.7rem; line-height: 1.5; color: rgba(21,23,23,.62);
+      max-width: 48rem; margin: 0 auto 2.8rem;
+    }
+    @media (min-width: 768px) { .assistant-card p { font-size: 2.2rem; } }
+
+    .assist-fab {
+      position: fixed; right: 2rem; bottom: 2rem; z-index: 60;
+      display: inline-flex; align-items: center; gap: 1rem;
+      padding: 1.4rem 2rem; border-radius: 999px;
+      background: var(--ink); color: #fff;
+      font-size: 1.5rem; font-weight: 600;
+      box-shadow: 0 1.2rem 3rem rgba(21,23,23,.28);
+      transition: transform .35s var(--ease), box-shadow .35s ease;
+    }
+    @media (min-width: 768px) {
+      .assist-fab { right: 3rem; bottom: 3rem; font-size: 1.7rem; padding: 1.6rem 2.4rem; }
+    }
+    .assist-fab:hover { transform: translateY(-2px); box-shadow: 0 1.6rem 3.6rem rgba(21,23,23,.34); }
+    .assist-fab-dot {
+      width: .9rem; height: .9rem; border-radius: 50%; background: #7dffa0;
+      box-shadow: 0 0 0 .35rem rgba(125,255,160,.2);
+    }
+
+    .assist-panel {
+      position: fixed; right: 1.5rem; bottom: 8rem; z-index: 61;
+      width: min(42rem, calc(100vw - 3rem));
+      height: min(62rem, calc(100svh - 12rem));
+      background: #fff; color: var(--ink);
+      border-radius: 1.6rem;
+      border: 1px solid var(--hair);
+      box-shadow: 0 2.4rem 6rem rgba(21,23,23,.22);
+      display: flex; flex-direction: column;
+      opacity: 0; pointer-events: none;
+      transform: translateY(1.2rem) scale(.98);
+      transition: opacity .3s ease, transform .35s var(--ease);
+    }
+    .assist-panel.open {
+      opacity: 1; pointer-events: auto;
+      transform: translateY(0) scale(1);
+    }
+    .assist-panel-head {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.6rem 1.8rem;
+      border-bottom: 1px solid var(--hair);
+    }
+    .assist-panel-head strong { font-size: 1.7rem; font-weight: 600; }
+    .assist-panel-head span { display: block; font-size: 1.3rem; color: var(--em); font-weight: 500; margin-top: .2rem; }
+    .assist-close {
+      width: 3.6rem; height: 3.6rem; border-radius: 50%;
+      border: 1px solid var(--hair); font-size: 2rem; line-height: 1;
+    }
+    .assist-msgs {
+      flex: 1; overflow-y: auto; padding: 1.6rem 1.8rem;
+      display: flex; flex-direction: column; gap: 1.2rem;
+    }
+    .assist-bubble {
+      max-width: 88%; padding: 1.2rem 1.4rem; border-radius: 1.2rem;
+      font-size: 1.5rem; line-height: 1.45; font-weight: 500;
+    }
+    .assist-bubble.bot {
+      align-self: flex-start;
+      background: var(--soft); color: var(--ink);
+      border-bottom-left-radius: .4rem;
+    }
+    .assist-bubble.user {
+      align-self: flex-end;
+      background: var(--ink); color: #fff;
+      border-bottom-right-radius: .4rem;
+    }
+    .assist-chips {
+      display: flex; flex-wrap: wrap; gap: .8rem;
+      padding: 0 1.8rem 1.2rem;
+    }
+    .assist-chip {
+      border: 1px solid rgba(21,23,23,.14);
+      border-radius: 999px;
+      padding: .8rem 1.2rem;
+      font-size: 1.35rem; font-weight: 500;
+      background: #fff;
+      transition: background .25s ease, border-color .25s ease;
+    }
+    .assist-chip:hover { background: var(--soft); border-color: rgba(21,23,23,.28); }
+    .assist-form {
+      display: flex; gap: .8rem; align-items: center;
+      padding: 1.2rem 1.4rem 1.4rem;
+      border-top: 1px solid var(--hair);
+    }
+    .assist-form input {
+      flex: 1; border: 1px solid var(--hair); border-radius: 999px;
+      padding: 1.1rem 1.4rem; font: inherit; font-size: 1.5rem; outline: 0;
+    }
+    .assist-form button[type="submit"] {
+      border-radius: 999px; background: var(--ink); color: #fff;
+      padding: 1.1rem 1.6rem; font-size: 1.4rem; font-weight: 600;
+    }
+    .assist-wa {
+      display: block; text-align: center;
+      font-size: 1.35rem; font-weight: 500; color: var(--em);
+      padding: 0 1.4rem 1.4rem;
+    }
+    .assist-wa:hover { color: var(--ink); }
+
+    .reveal { opacity: 0; transform: translateY(2rem); }
+
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { opacity: 1 !important; transform: none !important; }
+      .ink-line .ink-word {
+        color: rgba(21,23,23,1) !important;
+        font-weight: 600 !important;
+        opacity: 1 !important;
+      }
+      .ink-line.is-dim .ink-word { color: rgba(21,23,23,.55) !important; }
+      html { scroll-behavior: auto; }
+    }
+  </style>
+</head>
+<body>
+  <header class="header is-transparent" id="header">
+    <div class="container header-inner">
+      <a class="logo" href="#top" aria-label="CRESTORA"><span class="logo-word">CRESTORA</span></a>
+      <nav class="nav" aria-label="Primary">
+        <a href="#why"><span data-text="Explore">Explore</span></a>
+        <a href="#why"><span data-text="Districts">Districts</span></a>
+        <a href="#own"><span data-text="Advisors">Advisors</span></a>
+        <a href="#own"><span data-text="Careers">Careers</span></a>
+        <a href="#features"><span data-text="Insights">Insights</span></a>
+        <a href="#features"><span data-text="Guides">Guides</span></a>
+        <a href="#features"><span data-text="Studio">Studio</span></a>
+        <a href="/agent"><span data-text="AI agent">AI agent</span></a>
+      </nav>
+      <div class="header-actions">
+        <a class="btn btn-primary" href="https://api.whatsapp.com/send/?phone=918190007072&text=Hi%2C%20I%27d%20like%20to%20enquire%20with%20Crestora.&type=phone_number&app_absent=0" target="_blank" rel="noopener noreferrer">Member Login</a>
+        <button class="burger" id="burger" aria-label="Menu"><span></span></button>
+      </div>
+    </div>
+  </header>
+  <div class="mobile-nav" id="mobileNav">
+    <a href="#why">Explore</a>
+    <a href="#why">Districts</a>
+    <a href="#own">Advisors</a>
+    <a href="#own">Careers</a>
+    <a href="#features">Insights</a>
+    <a href="#features">Guides</a>
+    <a href="#features">Studio</a>
+    <a href="/agent">AI agent</a>
+    <a href="https://api.whatsapp.com/send/?phone=918190007072&text=Hi%2C%20I%27d%20like%20to%20enquire%20with%20Crestora.&type=phone_number&app_absent=0" target="_blank" rel="noopener noreferrer">Member Login</a>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero" id="top">
+    <div class="hero-sticky">
+      <div class="hero-bg">
+        <div class="hero-back" id="heroBack">
+          <img src="assets/back.f53e9773.jpg" alt="" />
+        </div>
+        <div class="hero-house" id="heroHouse">
+          <img src="assets/house.png" alt="" />
+        </div>
+        <div class="hero-clouds" aria-hidden="true">
+          <div class="hero-cloud" id="cloudL"><img src="assets/cloud.c8800fa9.png" alt="" /></div>
+          <div class="hero-cloud" id="cloudR"><img src="assets/cloud.c8800fa9.png" alt="" /></div>
+        </div>
+        <div class="hero-composite" id="heroComposite">
+          <div class="hero-composite-word">CRESTORA</div>
+        </div>
+        <div class="hero-logo-stroke" id="heroLogoStroke">
+          <span>CRESTORA</span>
+        </div>
+        <div class="hero-smoke" id="heroSmoke">
+          <img src="assets/smoke.9f683cb4.png" alt="" />
+        </div>
+        <div class="hero-overlay"></div>
+      </div>
+      <div class="hero-content" id="heroContent">
+        <div>
+          <h1 class="hero-title">Live Where Ambition Settles</h1>
+          <p class="hero-sub">Private advisors. Quiet luxury. A refined path from first tour to keys in hand.</p>
+          <div class="hero-cta">
+            <a class="btn" href="/agent">Browse Residences</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY CRESTORA -->
+  <section class="why" id="why">
+    <div class="container why-grid">
+      <div class="why-label">
+        <span class="dim ink-line is-dim">Inside CRESTORA</span>
+        <span class="ink-line">Why Crestora</span>
+      </div>
+      <div>
+        <h2 class="ink-line">Your chapter is shifting. Don’t settle for square footage — claim the setting that fits.</h2>
+        <p class="ink-line">Crestora pairs calm strategy with local fluency, so every decision feels deliberate, not rushed.</p>
+      </div>
+    </div>
+    <div class="container">
+      <div class="city-strip reveal" id="cityStrip">
+        <video src="assets/crestora-hero-wide.mp4" autoplay muted loop playsinline preload="auto" style="width:100%;height:100%;object-fit:cover;border-radius:inherit;display:block"></video>
+      </div>
+    </div>
+  </section>
+
+  <!-- IDENTITY -->
+  <section class="identity" id="identity">
+    <div class="container">
+      <h2 class="reveal">This isn’t simply <span class="em">another brokerage.</span></h2>
+    </div>
+    <div class="chevrons" id="chevrons">
+      <div class="chev"><img src="assets/chevron-1.jpg" alt="" /></div>
+      <div class="chev"><img src="assets/chevron-2.jpg" alt="" /></div>
+      <div class="chev"><img src="assets/chevron-3.jpg" alt="" /></div>
+      <div class="chev"><img src="assets/chevron-4.jpg" alt="" /></div>
+    </div>
+    <div class="container">
+      <p class="identity-body reveal">Message Crestora on WhatsApp and an AI advisor answers in under a minute — day or night — with clear next steps, not a callback ticket. You’re not hunting listings; you’re shaping how daily life feels, with a team that never goes dark.</p>
+    </div>
+  </section>
+
+  <!-- REWIRED -->
+  <section class="rewired" id="rewired">
+    <div class="container rewired-grid">
+      <div class="rewired-left">
+        <h2 class="rewired-title">
+          <div class="ink-line">Property,</div>
+          <div class="ink-line is-em">Reimagined.</div>
+        </h2>
+        <a class="btn btn-primary reveal" href="/agent">Begin Exploring</a>
+        <a class="for-agents reveal" href="https://api.whatsapp.com/send/?phone=918190007072&text=Hi%2C%20I%27d%20like%20to%20enquire%20with%20Crestora.&type=phone_number&app_absent=0" target="_blank" rel="noopener noreferrer">For Advisors</a>
+      </div>
+      <div>
+        <div class="rewired-label ink-line">The path:</div>
+        <div class="step" data-index="01">
+          <div>
+            <strong class="ink-line">Meet a Dedicated Advisor.</strong>
+            <p class="ink-line is-dim">Message us on WhatsApp — an AI advisor replies in under a minute, any hour, and maps your priorities before any address appears.</p>
+          </div>
+        </div>
+        <div class="step" data-index="02">
+          <div>
+            <strong class="ink-line">Shape the Brief.</strong>
+            <p class="ink-line is-dim">Light, commute, budget, atmosphere — distilled into a clear brief.</p>
+          </div>
+        </div>
+        <div class="step" data-index="03">
+          <div>
+            <strong class="ink-line">Close with Confidence.</strong>
+            <p class="ink-line is-dim">We negotiate, coordinate, and shepherd every detail to the finish.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- OWN IT -->
+  <section class="own" id="own">
+    <div class="container own-grid">
+      <div class="own-visual" id="ownVisual">
+        <img src="assets/own-visual.jpg" alt="Advisor overlooking the city" />
+      </div>
+      <div>
+        <p class="eyebrow ink-line is-dim">For Advisors</p>
+        <h2>
+          <span class="ink-line">Stop Leasing Your Future.</span>
+          <span class="ink-line is-em"> Build Equity.</span>
+        </h2>
+        <p class="ink-line">Crestora invites top advisors into a partnership model — sharing upside so your craft and your compensation rise together.</p>
+        <p class="ink-line">Your clients get an AI agent that replies in under a minute, any hour — while you keep mentorship, shared upside, and a brand that treats trust as non-negotiable. This isn’t clock-in brokerage; it’s a practice you grow.</p>
+        <a class="btn btn-primary reveal" href="/agent?intent=advisor">Apply to Crestora</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="services" id="services">
+    <div class="container">
+      <div class="services-head reveal">
+        <div class="services-caption">Offerings</div>
+        <h2 class="services-title">How Crestora<br /><span class="em">Works With You</span></h2>
+      </div>
+      <div class="service-items">
+        <button class="service-item" type="button">
+          <div class="service-bg"><img src="assets/buy.fed72bc8.jpg" alt="" /></div>
+          <div class="inner">
+            <div class="s-num"></div>
+            <p class="s-text">Acquire with a curated shortlist, inspector-ready diligence, and advisors who balance emotion with numbers — so you secure the home that actually fits your life.</p>
+            <div class="s-more">
+              <span>Acquire</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17L17 7M17 7H9M17 7V15"/></svg>
+            </div>
+          </div>
+        </button>
+        <button class="service-item" type="button">
+          <div class="service-bg"><img src="assets/sell.90b8e66b.jpg" alt="" /></div>
+          <div class="inner">
+            <div class="s-num"></div>
+            <p class="s-text">Present your residence with cinematic staging, precise pricing, and outreach that attracts serious buyers — then negotiate until the terms protect your equity.</p>
+            <div class="s-more">
+              <span>List</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17L17 7M17 7H9M17 7V15"/></svg>
+            </div>
+          </div>
+        </button>
+        <button class="service-item" type="button">
+          <div class="service-bg"><img src="assets/rent.6736c732.jpg" alt="" /></div>
+          <div class="inner">
+            <div class="s-num"></div>
+            <p class="s-text">Lease thoughtfully — off-market options, landlord fluency, and terms that respect your timeline whether you need six months or a longer chapter.</p>
+            <div class="s-more">
+              <span>Lease</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17L17 7M17 7H9M17 7V15"/></svg>
+            </div>
+          </div>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <section class="agents-band">
+    <p class="reveal"><span class="em">Crestora advisors stay with you through</span> tours, offers, and closing day <span class="em">— steady, sharp, and unhurried.</span></p>
+    <a class="btn btn-ghost reveal" href="/agent">Start with Crestora</a>
+  </section>
+
+  <!-- SUPPORT -->
+  <section class="features" id="features">
+    <div class="container">
+      <div class="features-top">
+        <h2 class="reveal">Care That Continues<br /><span class="em">After</span><br /><span class="em">the Keys</span></h2>
+        <div>
+          <p class="reveal">Markets shift. Plans evolve. <span class="em">Crestora stays available — financing partners, stewardship, and development counsel when you’re ready for the next move.</span></p>
+          <a class="btn btn-ghost reveal" href="https://api.whatsapp.com/send/?phone=918190007072&text=Hi%2C%20I%27d%20like%20to%20enquire%20with%20Crestora.&type=phone_number&app_absent=0" target="_blank" rel="noopener noreferrer">See the Studio</a>
+        </div>
+      </div>
+      <div class="feature-cards">
+        <article class="feature-card">
+          <img src="assets/feature-lending.jpg" alt="" />
+          <div class="shade"></div>
+          <div class="sheen" aria-hidden="true"></div>
+          <div class="meta">
+            <h3>Lending Partners</h3>
+            <a class="more" href="https://api.whatsapp.com/send/?phone=918190007072&text=Hi%2C%20I%27d%20like%20to%20enquire%20with%20Crestora.&type=phone_number&app_absent=0" target="_blank" rel="noopener noreferrer">Explore →</a>
+          </div>
+        </article>
+        <article class="feature-card">
+          <img src="assets/feature-stewardship.jpg" alt="" />
+          <div class="shade"></div>
+          <div class="sheen" aria-hidden="true"></div>
+          <div class="meta">
+            <h3>Residence Stewardship</h3>
+            <a class="more" href="https://api.whatsapp.com/send/?phone=918190007072&text=Hi%2C%20I%27d%20like%20to%20enquire%20with%20Crestora.&type=phone_number&app_absent=0" target="_blank" rel="noopener noreferrer">Explore →</a>
+          </div>
+        </article>
+        <article class="feature-card">
+          <img src="assets/feature-development.jpg" alt="" />
+          <div class="shade"></div>
+          <div class="sheen" aria-hidden="true"></div>
+          <div class="meta">
+            <h3>Design &amp; Development</h3>
+            <a class="more" href="https://api.whatsapp.com/send/?phone=918190007072&text=Hi%2C%20I%27d%20like%20to%20enquire%20with%20Crestora.&type=phone_number&app_absent=0" target="_blank" rel="noopener noreferrer">Explore →</a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ASSISTANT -->
+  <section class="assistant-section" id="ai-agent">
+    <div class="container">
+      <div class="assistant-card reveal">
+        <div class="assistant-pulse" aria-hidden="true"><i></i><i></i><i></i></div>
+        <p class="eyebrow">Personal property help</p>
+        <h2>Talk to our <span class="em">AI agent</span></h2>
+        <p>Questions on buying, selling, leasing, budgets, or booking a tour? Our AI agent guides you in seconds — then hands you to WhatsApp when you’re ready.</p>
+        <a class="btn btn-primary" href="/agent">Open AI agent →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- OUTRO -->
+  <section class="outro" id="outro">
+    <div class="outro-bg">
+      <img src="assets/outro-bg.jpg" alt="" />
+    </div>
+    <div class="outro-inner">
+      <h2 class="reveal">Arrive Home. <span class="em">We’ll Shape the Journey.</span></h2>
+      <a class="btn btn-primary reveal" href="/agent" style="background:#fff;color:#151717">Book a Conversation</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer" id="footer">
+    <div class="container footer-grid">
+      <div class="newsletter">
+        <h4>Receive Crestora Notes</h4>
+        <form class="newsletter-form" action="https://api.whatsapp.com/send/" method="get" target="_blank" rel="noopener noreferrer">
+          <input type="hidden" name="phone" value="918190007072" />
+          <input type="hidden" name="text" value="Hi, I'd like to enquire with Crestora." />
+          <input type="hidden" name="type" value="phone_number" />
+          <input type="hidden" name="app_absent" value="0" />
+          <input type="email" placeholder="Your email" aria-label="Email" />
+          <button type="submit" aria-label="Subscribe">→</button>
+        </form>
+      </div>
+      <div class="foot-links">
+        <ul>
+          <li><a href="#why">Explore</a></li>
+          <li><a href="#own">Advisors</a></li>
+          <li><a href="#own">Careers</a></li>
+          <li><a href="#features">Studio</a></li>
+          <li><a href="/agent">AI agent</a></li>
+          <li><a href="https://api.whatsapp.com/send/?phone=918190007072&text=Hi%2C%20I%27d%20like%20to%20enquire%20with%20Crestora.&type=phone_number&app_absent=0" target="_blank" rel="noopener noreferrer">Member Portal</a></li>
+        </ul>
+        <ul>
+          <li><a href="https://api.whatsapp.com/send/?phone=918190007072&text=Hi%2C%20I%27d%20like%20to%20enquire%20with%20Crestora.&type=phone_number&app_absent=0" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+          <li><a href="https://api.whatsapp.com/send/?phone=918190007072&text=Hi%2C%20I%27d%20like%20to%20enquire%20with%20Crestora.&type=phone_number&app_absent=0" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+          <li><a href="https://api.whatsapp.com/send/?phone=918190007072&text=Hi%2C%20I%27d%20like%20to%20enquire%20with%20Crestora.&type=phone_number&app_absent=0" target="_blank" rel="noopener noreferrer">Pinterest</a></li>
+          <li><a href="https://api.whatsapp.com/send/?phone=918190007072&text=Hi%2C%20I%27d%20like%20to%20enquire%20with%20Crestora.&type=phone_number&app_absent=0" target="_blank" rel="noopener noreferrer">X</a></li>
+        </ul>
+      </div>
+      <div class="foot-contact">
+        <div>
+          <strong>Studio</strong>
+          14, Khader Nawaz Khan Road, Nungambakkam,<br />Chennai, Tamil Nadu 600034
+        </div>
+        <div>
+          <strong>Write</strong>
+          <a href="mailto:hello@actionpackd.com">hello@actionpackd.com</a>
+        </div>
+        <div>
+          <strong>Call</strong>
+          <a href="https://api.whatsapp.com/send/?phone=918190007072&text=Hi%2C%20I%27d%20like%20to%20enquire%20with%20Crestora.&type=phone_number&app_absent=0" target="_blank" rel="noopener noreferrer">+91 81900 07072</a>
+        </div>
+      </div>
+      <div class="foot-brand">
+        <span class="logo-word">CRESTORA</span>
+      </div>
+    </div>
+  </footer>
+
+  <a class="assist-fab" href="/agent">
+    <span class="assist-fab-dot" aria-hidden="true"></span>
+    Talk to our AI agent
+  </a>
+
+  <script>
+    /*
+     * CRESTORA — Lenis + GSAP ScrollTrigger
+     * Hero: sticky stage — house scale/rise, clouds part, smoke rise,
+     * content fade, CRESTORA wordmark composite reveal
+     */
+    (function () {
+      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      gsap.registerPlugin(ScrollTrigger);
+
+      const header = document.getElementById("header");
+      const burger = document.getElementById("burger");
+      const mobileNav = document.getElementById("mobileNav");
+      burger.addEventListener("click", () => mobileNav.classList.toggle("open"));
+      mobileNav.querySelectorAll("a").forEach((a) => a.addEventListener("click", () => mobileNav.classList.remove("open")));
+
+      let lenis;
+      if (!reduce && window.Lenis) {
+        lenis = new Lenis({
+          duration: 1.2,
+          easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+          smoothWheel: true,
+        });
+        lenis.on("scroll", ScrollTrigger.update);
+        gsap.ticker.add((t) => lenis.raf(t * 1000));
+        gsap.ticker.lagSmoothing(0);
+      }
+
+      function syncHeader() {
+        const y = (lenis && typeof lenis.scroll === "number") ? lenis.scroll : (window.scrollY || 0);
+        const heroZone = y < window.innerHeight * 0.42;
+        if (heroZone) {
+          header.classList.add("is-transparent");
+          header.classList.remove("is-dark", "is-solid");
+          return;
+        }
+        const darkEls = ["#services", ".agents-band", "#features", "#outro", "#footer"];
+        const lightEls = ["#why", "#identity", "#rewired", "#own"];
+        const under = (sel) => {
+          const el = document.querySelector(sel);
+          if (!el) return false;
+          const r = el.getBoundingClientRect();
+          return r.top < 72 && r.bottom > 72;
+        };
+        const dark = darkEls.some(under);
+        header.classList.toggle("is-dark", dark);
+        header.classList.toggle("is-solid", !dark);
+        header.classList.remove("is-transparent");
+      }
+
+      if (reduce) {
+        document.querySelectorAll(".reveal").forEach((el) => {
+          el.style.opacity = 1;
+          el.style.transform = "none";
+        });
+        document.querySelectorAll("#why .ink-line, #own .ink-line, #rewired .ink-line").forEach((el) => {
+          el.style.color = "";
+          el.querySelectorAll(".ink-word").forEach((w) => {
+            w.style.color = el.classList.contains("is-dim") || el.classList.contains("is-em")
+              ? "rgba(21,23,23,.55)"
+              : "rgba(21,23,23,1)";
+            w.style.fontWeight = "600";
+            w.style.opacity = "1";
+          });
+        });
+        window.addEventListener("scroll", syncHeader);
+        syncHeader();
+        return;
+      }
+
+      // Hero intro — killed as soon as scroll scrub starts (avoids scale flicker)
+      gsap.set("#heroHouse", {
+        xPercent: -50,
+        left: "50%",
+        transformOrigin: "50% 0%",
+        scale: 0.94,
+        force3D: true,
+      });
+      const houseIntro = gsap.to("#heroHouse", {
+        scale: 1,
+        duration: 3.8,
+        ease: "expo.out",
+        overwrite: "auto",
+      });
+      gsap.from("#cloudL", { y: "50%", duration: 3, ease: "expo.out" });
+      gsap.from("#cloudR", { y: "40%", duration: 3.2, ease: "expo.out" });
+      gsap.from("#heroContent > div > *", {
+        y: 40, opacity: 0, duration: 1.2, stagger: 0.15, ease: "power3.out", delay: 0.3,
+      });
+
+      // Hero scroll sequence — building grows from the roof down
+      const landscape = () => window.innerHeight < window.innerWidth;
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: ".hero",
+          start: "top top",
+          end: "bottom bottom",
+          scrub: 0.45,
+          onUpdate: (self) => {
+            if (self.progress > 0.002) houseIntro.kill();
+            syncHeader();
+          },
+          invalidateOnRefresh: true,
+        },
+      });
+
+      tl.fromTo("#heroHouse", {
+        y: 0,
+        scale: 1,
+        xPercent: -50,
+      }, {
+        y: landscape() ? "-8%" : "-4%",
+        scale: landscape() ? 2.35 : 2.05,
+        xPercent: -50,
+        duration: 1,
+        ease: "none",
+        immediateRender: false,
+      }, 0)
+        .to("#heroSmoke", { y: "0%", duration: 1, ease: "none" }, 0)
+        .to("#cloudL", { x: "-15%", duration: 1, ease: "none" }, 0)
+        .to("#cloudR", { x: "15%", duration: 1, ease: "none" }, 0)
+        .to("#heroContent", { y: "20%", scale: 0.9, duration: 0.7, ease: "none" }, 0)
+        .to("#heroContent", { opacity: 0, duration: 0.25, ease: "none" }, 0.35)
+        .to("#heroLogoStroke", { opacity: 1, duration: 0.35, ease: "none" }, 0.45)
+        .to("#heroComposite", { opacity: 1, duration: 0.4, ease: "none" }, 0.55)
+        .to("#heroHouse", { opacity: 0, duration: 0.25, ease: "none" }, 0.55)
+        .to("#heroLogoStroke", { opacity: 0, duration: 0.3, ease: "none" }, 0.75)
+        .to(["#cloudL", "#cloudR", "#heroSmoke"], { opacity: 0.35, duration: 0.3, ease: "none" }, 0.7);
+
+      // Why Crestora — darken / bolden words sweeping from the right
+      function splitInkWords(el) {
+        const text = el.textContent.replace(/\s+/g, " ").trim();
+        el.textContent = "";
+        text.split(" ").forEach((word, i, arr) => {
+          const span = document.createElement("span");
+          span.className = "ink-word";
+          span.textContent = word;
+          el.appendChild(span);
+          if (i < arr.length - 1) el.appendChild(document.createTextNode(" "));
+        });
+        return el.querySelectorAll(".ink-word");
+      }
+
+      gsap.utils.toArray("#why .ink-line, #own .ink-line, #rewired .ink-line").forEach((line) => {
+        const words = splitInkWords(line);
+        const isDim = line.classList.contains("is-dim");
+        const isEm = line.classList.contains("is-em");
+        const endColor = isDim || isEm
+          ? "rgba(21,23,23,.55)"
+          : "rgba(21,23,23,1)";
+
+        // Color/opacity only — font-weight animation causes layout flicker
+        gsap.fromTo(
+          words,
+          { color: "rgba(21,23,23,.16)", opacity: 0.75 },
+          {
+            color: endColor,
+            opacity: 1,
+            ease: "none",
+            stagger: {
+              each: 0.04,
+              from: "start",
+            },
+            scrollTrigger: {
+              trigger: line,
+              start: "top 98%",
+              end: "top 58%",
+              scrub: 0.4,
+            },
+          }
+        );
+      });
+
+      gsap.fromTo(
+        "#rewired .step",
+        { opacity: 0.3, y: 24 },
+        {
+          opacity: 1,
+          y: 0,
+          ease: "none",
+          stagger: 0.1,
+          scrollTrigger: {
+            trigger: "#rewired",
+            start: "top 92%",
+            end: "center 60%",
+            scrub: 0.4,
+          },
+        }
+      );
+
+      // Reveals — fire early so fast scrollers still catch copy
+      gsap.utils.toArray(".reveal").forEach((el) => {
+        gsap.to(el, {
+          opacity: 1,
+          y: 0,
+          duration: 0.75,
+          ease: "power3.out",
+          scrollTrigger: { trigger: el, start: "top 98%", toggleActions: "play none none none" },
+        });
+      });
+
+      gsap.fromTo(
+        "#chevrons .chev",
+        { x: -70, opacity: 0.2, scale: 0.88 },
+        {
+          x: 0,
+          opacity: 1,
+          scale: 1,
+          ease: "none",
+          stagger: 0.08,
+          force3D: true,
+          scrollTrigger: {
+            trigger: "#chevrons",
+            start: "top 98%",
+            end: "center 55%",
+            scrub: 0.35,
+          },
+        }
+      );
+      gsap.fromTo(
+        "#chevrons .chev img",
+        { scale: 1.28, xPercent: -5 },
+        {
+          scale: 1.12,
+          xPercent: 0,
+          ease: "none",
+          stagger: 0.08,
+          force3D: true,
+          scrollTrigger: {
+            trigger: "#chevrons",
+            start: "top 98%",
+            end: "bottom 30%",
+            scrub: 0.4,
+          },
+        }
+      );
+
+      gsap.to("#cityStrip video", {
+        yPercent: -14, ease: "none",
+        scrollTrigger: { trigger: "#cityStrip", start: "top bottom", end: "bottom top", scrub: true },
+      });
+
+      // Advisors visual — smooth reveal + Ken Burns (no clip-path / filter)
+      gsap.fromTo(
+        "#ownVisual",
+        { y: 36, opacity: 0.35 },
+        {
+          y: 0,
+          opacity: 1,
+          ease: "none",
+          scrollTrigger: {
+            trigger: "#ownVisual",
+            start: "top 90%",
+            end: "top 55%",
+            scrub: 0.55,
+          },
+        }
+      );
+      gsap.fromTo(
+        "#ownVisual img",
+        { scale: 1.2, yPercent: 6 },
+        {
+          scale: 1.05,
+          yPercent: -3,
+          ease: "none",
+          force3D: true,
+          scrollTrigger: {
+            trigger: "#ownVisual",
+            start: "top bottom",
+            end: "bottom top",
+            scrub: true,
+          },
+        }
+      );
+
+      // Feature cards — staggered reveal + slow zoom (no CSS transform conflict)
+      gsap.fromTo(
+        "#features .feature-card",
+        { y: 48, opacity: 0.25 },
+        {
+          y: 0,
+          opacity: 1,
+          ease: "none",
+          stagger: 0.1,
+          scrollTrigger: {
+            trigger: "#features .feature-cards",
+            start: "top 90%",
+            end: "top 50%",
+            scrub: 0.55,
+          },
+        }
+      );
+      gsap.utils.toArray("#features .feature-card img").forEach((img) => {
+        gsap.fromTo(
+          img,
+          { scale: 1.16, yPercent: 4 },
+          {
+            scale: 1.05,
+            yPercent: -3,
+            ease: "none",
+            force3D: true,
+            scrollTrigger: {
+              trigger: img.closest(".feature-card"),
+              start: "top bottom",
+              end: "bottom top",
+              scrub: true,
+            },
+          }
+        );
+      });
+      gsap.fromTo(
+        "#features .feature-card .meta",
+        { y: 18, opacity: 0.4 },
+        {
+          y: 0,
+          opacity: 1,
+          ease: "none",
+          stagger: 0.08,
+          scrollTrigger: {
+            trigger: "#features .feature-cards",
+            start: "top 80%",
+            end: "top 45%",
+            scrub: 0.5,
+          },
+        }
+      );
+
+      ScrollTrigger.create({ onUpdate: syncHeader });
+      window.addEventListener("resize", () => {
+        ScrollTrigger.refresh();
+        syncHeader();
+      });
+      syncHeader();
+    })();
+  </script>
+</body>
+</html>

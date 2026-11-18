@@ -1,0 +1,133 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --paper: #ecebe6;
+  --graphite: #15171a;
+  --sienna: #b5532f;
+  --blueprint: #2d4bff;
+  --amberglow: #ffb457;
+  --mist: #d8d6cf;
+  --ash: #6b6e73;
+  --font-sans: "Space Grotesk", system-ui, sans-serif;
+  --font-serif: "Instrument Serif", Georgia, serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --grid-col: calc((100% - 11 * 1px) / 12);
+}
+
+html {
+  background: var(--paper);
+}
+
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+body {
+  color: var(--graphite);
+  background: var(--paper);
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--sienna) 35%, transparent);
+  color: var(--graphite);
+}
+
+@layer utilities {
+  .display {
+    font-family: var(--font-sans);
+    font-weight: 500;
+    line-height: 0.92;
+    letter-spacing: -0.04em;
+    text-wrap: balance;
+  }
+
+  .accent-italic {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+  }
+
+  .mono-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  .blueprint-grid {
+    background-image:
+      linear-gradient(to right, rgba(45, 75, 255, 0.06) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(45, 75, 255, 0.06) 1px, transparent 1px);
+    background-size: calc(100% / 12) calc(100% / 12);
+  }
+
+  .crosshair-corners::before,
+  .crosshair-corners::after {
+    content: "";
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    border-color: rgba(21, 23, 26, 0.35);
+    pointer-events: none;
+  }
+  .crosshair-corners::before {
+    top: 12px;
+    left: 12px;
+    border-top: 1px solid;
+    border-left: 1px solid;
+  }
+  .crosshair-corners::after {
+    right: 12px;
+    bottom: 12px;
+    border-right: 1px solid;
+    border-bottom: 1px solid;
+  }
+
+  .mask-line {
+    overflow: hidden;
+    display: block;
+  }
+  .mask-line > span {
+    display: block;
+    transform: translateY(110%);
+  }
+
+  .hairline {
+    border-color: rgba(21, 23, 26, 0.12);
+  }
+}
+
+@keyframes fadeSoft {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.lenis {
+    scroll-behavior: auto;
+  }
+  .mask-line > span {
+    transform: none !important;
+  }
+}
+
+/* Custom cursor hide on fine pointers when custom cursor active */
+@media (pointer: fine) {
+  body.has-crosshair,
+  body.has-crosshair * {
+    cursor: none !important;
+  }
+}

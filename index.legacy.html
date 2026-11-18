@@ -1,0 +1,1380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FIND Real Estate | Purchase, Rent or Sell Commercial and Residential Real Estate</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <style>
+    :root {
+      --ink: #151717;
+      --em: #b3b3b3;
+      --bg: #fff;
+      --soft: #f1f1f1;
+      --line: #383a3a;
+      --hair: rgba(21,23,23,.07);
+      --ease: cubic-bezier(.16,1,.3,1);
+      --overshoot: cubic-bezier(.34,3.56,.64,1);
+      --font: "Instrument Sans", system-ui, sans-serif;
+      --serif: Lora, Georgia, serif;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 10px; height: 100%; }
+    @media (min-width: 768px) {
+      html { font-size: clamp(8px, .5208333333vw, 10px); }
+    }
+    @media (max-width: 767px) {
+      html { font-size: clamp(10px, 2.6666666667vw, 14px); }
+    }
+    body {
+      font-family: var(--font);
+      color: var(--ink);
+      background: var(--bg);
+      line-height: 1.15;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+    .em { color: var(--em); }
+    .container { padding: 0 2.5rem; margin: 0 auto; max-width: 1920px; }
+    @media (min-width: 768px) { .container { padding: 0 10rem; } }
+
+    /* ——— HEADER ——— */
+    .header {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+      transition: background-color .3s, color 1s;
+      color: var(--ink);
+    }
+    .header.is-transparent { background: transparent; }
+    .header.is-solid { background: #fff; }
+    .header.is-dark { background: var(--ink); color: #fff; }
+    .header-inner {
+      min-height: 8.4rem;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+    }
+    @media (min-width: 768px) {
+      .header-inner {
+        min-height: 9.8rem;
+        grid-template-columns: 25rem 1fr 25rem;
+      }
+    }
+    .logo svg { width: 9.1rem; height: 2.6rem; display: block; }
+    .nav {
+      display: none;
+      justify-content: center;
+      gap: 4rem;
+    }
+    @media (min-width: 768px) { .nav { display: flex; } }
+    .nav a {
+      font-weight: 500;
+      font-size: 1.8rem;
+      line-height: 1.25;
+      overflow: hidden;
+      position: relative;
+    }
+    @media (min-width: 768px) { .nav a { font-size: 2rem; } }
+    .nav a span {
+      display: block;
+      transition: transform .9s var(--ease);
+    }
+    .nav a span::after {
+      content: attr(data-text);
+      position: absolute; top: 105%; left: 0; right: 0;
+    }
+    .nav a:hover span { transform: translateY(-105%); }
+    .header-actions { display: flex; justify-content: flex-end; align-items: center; gap: 1.5rem; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      border-radius: 100px;
+      padding: 1.4rem 2.4rem;
+      font-size: 1.6rem; font-weight: 500; line-height: 1.5;
+      transition: transform .3s;
+    }
+    @media (min-width: 768px) {
+      .btn { font-size: 1.8rem; line-height: 1.4; padding: 1.54rem 3rem; }
+    }
+    .btn:hover { transform: scaleX(1.02); transition: transform .7s var(--overshoot); }
+    .btn-primary { background: var(--ink); color: #fff; }
+    .header.is-dark .btn-primary { background: #fff; color: var(--ink); }
+    .btn-secondary {
+      background: transparent; color: inherit;
+      border: 1px solid rgba(21,23,23,.3);
+    }
+    .header.is-dark .btn-secondary { border-color: hsla(0,0%,100%,.5); color: #fff; }
+    .btn-ghost {
+      background: transparent; color: #fff;
+      border: 1px solid hsla(0,0%,100%,.5);
+    }
+    .burger { display: flex; width: 4rem; height: 4rem; align-items: center; justify-content: center; }
+    @media (min-width: 768px) { .burger { display: none; } }
+    .burger span { width: 2.2rem; height: 2px; background: currentColor; position: relative; }
+    .burger span::before, .burger span::after {
+      content: ""; position: absolute; left: 0; right: 0; height: 2px; background: currentColor;
+    }
+    .burger span::before { top: -7px; } .burger span::after { top: 7px; }
+    .mobile-nav {
+      display: none; position: fixed; inset: 0; z-index: 49;
+      background: #fff; color: var(--ink);
+      padding: 12rem 2.5rem 4rem;
+      flex-direction: column; gap: 2.4rem;
+    }
+    .mobile-nav.open { display: flex; }
+    .mobile-nav a { font-size: 3.2rem; font-weight: 500; }
+
+    /* ——— HERO (sticky scroll stage) ——— */
+    .hero {
+      position: relative;
+      height: 350vh;
+      margin-top: -8.4rem;
+      margin-bottom: -100vh;
+    }
+    @media (min-width: 768px) {
+      .hero { height: 500vh; margin-top: -9.8rem; }
+    }
+    .hero-sticky {
+      position: sticky; top: 0; height: 100vh; overflow: hidden;
+      background: linear-gradient(180deg, #8ebce6 0%, #c5e0f6 45%, #eef6fc 100%);
+    }
+    .hero-bg { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+    .hero-back {
+      position: absolute; left: 50%; bottom: 0;
+      width: 140%; transform: translateX(-50%);
+      opacity: .5; filter: blur(1px);
+    }
+    .hero-back img { width: 100%; height: auto; }
+    .hero-house {
+      position: absolute; top: 48vh; left: 50%;
+      width: min(92vw, 92rem);
+      height: auto;
+      z-index: 1;
+      transform-origin: bottom center;
+      will-change: transform;
+      filter: drop-shadow(0 30px 50px rgba(0,0,0,.35));
+    }
+    @media (min-width: 768px) {
+      .hero-house { top: 38vh; width: min(78vw, 110rem); }
+    }
+    .hero-house img { width: 100%; height: auto; object-fit: contain; }
+    .hero-clouds { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
+    .hero-cloud {
+      position: absolute; will-change: transform;
+    }
+    .hero-cloud img { width: 100%; height: 100%; object-fit: cover; }
+    .hero-cloud:first-child {
+      top: 33%; left: -30%; width: 70rem; height: 30rem;
+    }
+    .hero-cloud:last-child {
+      top: 28%; right: -25%; width: 58rem; height: 25rem;
+    }
+    @media (min-width: 768px) {
+      .hero-cloud:first-child { top: 25%; left: -18%; width: 112rem; height: 48rem; }
+      .hero-cloud:last-child { top: 20%; right: -18%; width: 94rem; height: 40rem; }
+    }
+    .hero-smoke {
+      position: absolute; left: 0; right: 0; bottom: 0;
+      height: 45rem; z-index: 3;
+      transform: translateY(70%);
+      will-change: transform;
+    }
+    @media (min-width: 768px) { .hero-smoke { height: 62rem; } }
+    .hero-smoke img { width: 100%; height: 100%; object-fit: cover; object-position: top center; }
+    .hero-composite {
+      position: absolute; inset: 0; z-index: 1; opacity: 0;
+      display: grid; place-items: center;
+      -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 975 280'%3E%3Cpath fill='black' d='M244.55 81.28H81.14v59.42h101.02v80.17H81.14v60.12H1V1h207.91z'/%3E%3Cpath fill='black' d='M376.19 280.99h-141l61.26-140.29L235.2 1h141v279.99Z'/%3E%3Cpath fill='black' d='M595.45 183.2V1h80.14v279.99H556.68l-73.33-152.93V281H403.2V1h110.33z'/%3E%3Cpath fill='black' d='M836.06 1.01c77.3 0 139.94 62.69 139.94 140C976 218.33 913.35 281 836.06 281H702.61V1.01zm-52.82 80.17v119.44h44.58a59.5 59.5 0 0 0 42.21-17.5 59.7 59.7 0 0 0-42.2-101.94z'/%3E%3C/svg%3E");
+      mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 975 280'%3E%3Cpath fill='black' d='M244.55 81.28H81.14v59.42h101.02v80.17H81.14v60.12H1V1h207.91z'/%3E%3Cpath fill='black' d='M376.19 280.99h-141l61.26-140.29L235.2 1h141v279.99Z'/%3E%3Cpath fill='black' d='M595.45 183.2V1h80.14v279.99H556.68l-73.33-152.93V281H403.2V1h110.33z'/%3E%3Cpath fill='black' d='M836.06 1.01c77.3 0 139.94 62.69 139.94 140C976 218.33 913.35 281 836.06 281H702.61V1.01zm-52.82 80.17v119.44h44.58a59.5 59.5 0 0 0 42.21-17.5 59.7 59.7 0 0 0-42.2-101.94z'/%3E%3C/svg%3E");
+      -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+      -webkit-mask-position: center; mask-position: center;
+      -webkit-mask-size: min(90vw, 97.7rem) auto; mask-size: min(90vw, 97.7rem) auto;
+    }
+    .hero-composite .hero-house {
+      position: relative; top: auto; left: auto;
+      width: min(90vw, 97.7rem);
+      transform: none;
+      filter: none;
+    }
+    .hero-logo-stroke {
+      position: absolute; inset: 0; z-index: 2;
+      display: grid; place-items: center; opacity: 0; pointer-events: none;
+    }
+    .hero-logo-stroke svg {
+      width: min(90vw, 97.7rem); height: auto;
+    }
+    .hero-logo-stroke path {
+      fill: transparent; stroke: #fff; stroke-width: 2;
+    }
+    .hero-overlay {
+      position: absolute; left: 0; right: 0; bottom: 0; z-index: 4;
+      height: 10rem;
+      background: linear-gradient(180deg, rgba(255,255,255,0), #fff);
+      pointer-events: none;
+    }
+    @media (min-width: 768px) { .hero-overlay { height: 30.9rem; } }
+    .hero-content {
+      position: relative; z-index: 5;
+      display: grid; align-items: center; justify-items: center;
+      height: 100%; text-align: center;
+      padding: 0 2.5rem 15rem;
+    }
+    @media (min-width: 768px) { .hero-content { padding-bottom: 22.8rem; } }
+    .hero-title {
+      font-weight: 700;
+      font-size: 5.4rem;
+      line-height: 100%;
+      letter-spacing: -.02em;
+      color: var(--ink);
+      max-width: 16ch;
+    }
+    @media (min-width: 768px) { .hero-title { font-size: 14rem; } }
+    .hero-sub {
+      margin-top: 2rem;
+      font-weight: 500;
+      font-size: 1.6rem;
+      line-height: 1.5;
+      max-width: 36rem;
+      color: rgba(21,23,23,.72);
+    }
+    @media (min-width: 768px) {
+      .hero-sub { font-size: 3.2rem; line-height: 1.3; letter-spacing: -.01em; margin-top: 3rem; max-width: 71rem; }
+    }
+    .hero-cta { margin-top: 2.4rem; }
+    @media (min-width: 768px) { .hero-cta { margin-top: 4rem; } }
+    .hero-cta .btn {
+      background: rgba(255,255,255,.55);
+      border: 1px solid rgba(255,255,255,.7);
+      backdrop-filter: blur(10px);
+      color: var(--ink);
+    }
+
+    /* ——— WHY ——— */
+    .why {
+      position: relative; z-index: 2;
+      background: #fff;
+      padding: 8rem 0 4rem;
+    }
+    @media (min-width: 768px) { .why { padding: 12rem 0 6rem; } }
+    .why-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+    @media (min-width: 768px) {
+      .why-grid { grid-template-columns: 28rem 1fr; gap: 6rem; }
+    }
+    .why-label {
+      font-weight: 600; font-size: 1.6rem; line-height: 1.4;
+    }
+    @media (min-width: 768px) { .why-label { font-size: 2rem; } }
+    .why-label .dim { display: block; color: var(--em); margin-bottom: .6rem; }
+    .why h2 {
+      font-weight: 500;
+      font-size: 3.6rem;
+      line-height: 1.08;
+      letter-spacing: -.02em;
+      max-width: 18ch;
+    }
+    @media (min-width: 768px) { .why h2 { font-size: 7.2rem; letter-spacing: -.04em; } }
+    .why p {
+      margin-top: 2rem;
+      font-weight: 500;
+      font-size: 1.6rem;
+      line-height: 1.5;
+      max-width: 48rem;
+      color: rgba(21,23,23,.65);
+    }
+    @media (min-width: 768px) {
+      .why p { font-size: 2.4rem; letter-spacing: -.01em; max-width: 64rem; }
+    }
+    .city-strip {
+      margin-top: 6rem;
+      height: 28rem;
+      overflow: hidden;
+      border-radius: .4rem;
+    }
+    @media (min-width: 768px) { .city-strip { height: 52rem; margin-top: 10rem; } }
+    .city-strip img {
+      width: 100%; height: 120%; object-fit: cover;
+      will-change: transform;
+    }
+
+    /* ——— IDENTITY ——— */
+    .identity {
+      background: #fff;
+      padding: 6rem 0;
+      text-align: center;
+    }
+    @media (min-width: 768px) { .identity { padding: 12rem 0; } }
+    .identity h2 {
+      font-weight: 500;
+      font-size: 3.2rem;
+      letter-spacing: -.02em;
+      line-height: 1.15;
+    }
+    @media (min-width: 768px) { .identity h2 { font-size: 5.6rem; } }
+    .chevrons {
+      display: flex; justify-content: center; align-items: center;
+      margin: 4rem auto;
+      height: 28rem;
+      max-width: 120rem;
+    }
+    @media (min-width: 768px) { .chevrons { height: 42rem; margin: 6rem auto; } }
+    .chev {
+      width: clamp(12rem, 18vw, 24rem);
+      height: 100%;
+      margin-left: -3%;
+      clip-path: polygon(0 0, 72% 0, 100% 50%, 72% 100%, 0 100%, 28% 50%);
+      overflow: hidden;
+      box-shadow: 0 2rem 5rem rgba(0,0,0,.15);
+    }
+    .chev:first-child { margin-left: 0; }
+    .chev img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.12); }
+    .identity-body {
+      max-width: 64rem;
+      margin: 0 auto;
+      font-weight: 500;
+      font-size: 1.6rem;
+      line-height: 1.5;
+      color: rgba(21,23,23,.6);
+    }
+    @media (min-width: 768px) {
+      .identity-body { font-size: 2.4rem; letter-spacing: -.01em; max-width: 80rem; }
+    }
+
+    /* ——— REWIRED ——— */
+    .rewired {
+      padding: 4rem 0;
+      background: var(--soft);
+    }
+    @media (min-width: 768px) { .rewired { padding: 15rem 0; } }
+    .rewired-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 5rem;
+    }
+    @media (min-width: 768px) {
+      .rewired-grid { grid-template-columns: 1fr 1fr; gap: 8rem; align-items: start; }
+    }
+    .rewired-title {
+      font-weight: 500;
+      font-size: 4.4rem;
+      line-height: 1;
+      letter-spacing: -.02em;
+    }
+    @media (min-width: 768px) {
+      .rewired-title { font-size: 7.2rem; letter-spacing: -.04em; }
+    }
+    .rewired-left { display: flex; flex-direction: column; align-items: flex-start; gap: 3rem; }
+    @media (min-width: 768px) { .rewired-left { gap: 4rem; } }
+    .rewired-label {
+      font-weight: 500; font-size: 2.2rem; line-height: 1.15; margin-bottom: 3rem;
+    }
+    @media (min-width: 768px) {
+      .rewired-label { font-size: 3.2rem; line-height: 1.3; letter-spacing: -.01em; }
+    }
+    .step {
+      border-bottom: 1px solid var(--hair);
+      padding: 3rem 0;
+      font-weight: 500;
+      font-size: 2.2rem;
+      line-height: 1.15;
+    }
+    .step:first-of-type { border-top: 1px solid var(--hair); }
+    .step::before {
+      content: attr(data-index);
+      display: block;
+      font-size: 1.4rem;
+      color: var(--em);
+      margin-bottom: 1.5rem;
+    }
+    @media (min-width: 768px) {
+      .step {
+        font-size: 4.4rem;
+        letter-spacing: -.03em;
+        display: flex; align-items: center; gap: 5rem;
+      }
+      .step::before { margin-bottom: 0; font-size: 2rem; min-width: 3rem; }
+    }
+    .step p {
+      font-size: 1.5rem;
+      color: rgba(21,23,23,.55);
+      font-weight: 500;
+      margin-top: 1rem;
+      max-width: 40ch;
+    }
+    @media (min-width: 768px) {
+      .step p { font-size: 2rem; margin-top: 0; }
+    }
+    .for-agents {
+      margin-top: 2rem;
+      font-size: 1.6rem;
+      font-weight: 500;
+      color: var(--em);
+    }
+
+    /* ——— OWN ——— */
+    .own {
+      padding: 6rem 0;
+      background: #fff;
+    }
+    @media (min-width: 768px) { .own { padding: 15rem 0; } }
+    .own-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+    @media (min-width: 768px) {
+      .own-grid { grid-template-columns: 1.05fr .95fr; gap: 8rem; }
+    }
+    .own-visual {
+      overflow: hidden; border-radius: .6rem; aspect-ratio: 5/4;
+    }
+    .own-visual img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.1); }
+    .own .eyebrow {
+      font-size: 1.6rem; font-weight: 600; color: var(--em); margin-bottom: 2rem;
+    }
+    .own h2 {
+      font-weight: 500;
+      font-size: 4rem;
+      line-height: 1.05;
+      letter-spacing: -.03em;
+      margin-bottom: 2.4rem;
+    }
+    @media (min-width: 768px) { .own h2 { font-size: 7.2rem; } }
+    .own p {
+      font-weight: 500;
+      font-size: 1.6rem;
+      line-height: 1.55;
+      color: rgba(21,23,23,.62);
+      margin-bottom: 1.4rem;
+      max-width: 52rem;
+    }
+    @media (min-width: 768px) { .own p { font-size: 2.2rem; } }
+
+    /* ——— TESTIMONIALS ——— */
+    .testimonials {
+      padding: 6rem 0;
+      background: var(--soft);
+    }
+    @media (min-width: 768px) { .testimonials { padding: 15rem 0; } }
+    .testimonials h2 {
+      margin: 0 0 4rem;
+      font-weight: 500;
+      font-size: 4.4rem;
+      line-height: 105%;
+      letter-spacing: -.02em;
+    }
+    @media (min-width: 768px) {
+      .testimonials h2 { margin: 0 0 10rem; font-size: 7.2rem; line-height: 100%; letter-spacing: -.04em; }
+    }
+    .testi-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 4rem;
+    }
+    @media (min-width: 768px) {
+      .testi-grid { grid-template-columns: auto 65.2rem; gap: 9.2rem; }
+    }
+    .testi-photos {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.2rem;
+    }
+    .testi-photos img {
+      width: 100%; height: 36rem; object-fit: cover; border-radius: .6rem;
+    }
+    @media (min-width: 768px) {
+      .testi-photos img { height: 52rem; }
+    }
+    .quote {
+      border-top: 1px solid var(--ink);
+      padding-top: 3rem;
+    }
+    .quote p {
+      font-family: var(--serif);
+      font-size: 2rem;
+      line-height: 1.45;
+      font-weight: 400;
+    }
+    @media (min-width: 768px) { .quote p { font-size: 2.8rem; } }
+    .quote .who {
+      margin-top: 3rem;
+      font-weight: 500;
+      font-size: 1.6rem;
+    }
+    .quote .who span { color: var(--em); }
+
+    /* ——— SERVICES ——— */
+    .services {
+      padding: 6rem 0;
+      color: #fff;
+      background: var(--ink);
+    }
+    @media (min-width: 768px) { .services { padding: 15rem 0; } }
+    .services-head {
+      display: grid;
+      margin: 0 0 6rem;
+    }
+    @media (min-width: 768px) {
+      .services-head {
+        grid-template-columns: auto 1fr;
+        margin: 0 0 10rem;
+        align-items: end;
+      }
+    }
+    .services-caption {
+      font-weight: 600; font-size: 2rem; line-height: 140%;
+      display: none;
+    }
+    @media (min-width: 768px) { .services-caption { display: block; } }
+    .services-title {
+      font-weight: 500;
+      font-size: 4.4rem;
+      line-height: 105%;
+      letter-spacing: -.02em;
+      text-align: left;
+    }
+    @media (min-width: 768px) {
+      .services-title { font-size: 7.2rem; letter-spacing: -.03em; text-align: right; }
+    }
+    .service-items { border-bottom: 1px solid var(--line); counter-reset: item-num; }
+    .service-item {
+      position: relative;
+      display: block;
+      width: 100%;
+      height: 40rem;
+      overflow: hidden;
+      color: inherit;
+      border-top: 1px solid var(--line);
+      text-align: left;
+    }
+    .service-item > .inner {
+      position: relative; z-index: 2;
+      display: grid;
+      height: 100%;
+      padding: 4rem 0 3.5rem;
+      grid-template-columns: 4.6rem 1fr;
+      gap: 2rem;
+      align-content: space-between;
+    }
+    @media (min-width: 768px) {
+      .service-item > .inner {
+        grid-template-columns: 4.6rem auto 1fr;
+        gap: 6rem;
+        padding-top: 6rem;
+        padding-bottom: 5.2rem;
+        align-items: start;
+      }
+    }
+    .service-bg {
+      position: absolute; inset: 0;
+      background: #1a1c1c;
+      transform: scale(1.05);
+      opacity: 0;
+      clip-path: inset(100% 0 0 0);
+      transition: opacity .4s, transform 4s cubic-bezier(.5,1,.89,1), clip-path 1s var(--ease);
+    }
+    .service-bg img { width: 100%; height: 100%; object-fit: cover; }
+    .service-item:hover .service-bg {
+      transform: scale(1);
+      opacity: .4;
+      clip-path: inset(0);
+    }
+    .s-num {
+      display: grid; place-items: center;
+      width: 3.6rem; height: 3.6rem;
+      border: 1px solid; border-radius: 50%;
+      font-weight: 500; font-size: 1.4rem;
+    }
+    @media (min-width: 768px) {
+      .s-num { width: 4.6rem; height: 4.6rem; font-size: 1.6rem; }
+    }
+    .s-num::before { content: counter(item-num); counter-increment: item-num; }
+    .s-text {
+      font-weight: 500;
+      font-size: 1.6rem;
+      line-height: 150%;
+      max-width: 40rem;
+      color: rgba(255,255,255,.75);
+    }
+    @media (min-width: 768px) {
+      .s-text { font-size: 2.4rem; letter-spacing: -.01em; text-wrap: balance; }
+    }
+    .s-more {
+      grid-column: 1 / -1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 10.45rem;
+      line-height: 95%;
+      letter-spacing: -.04em;
+      white-space: nowrap;
+    }
+    @media (min-width: 768px) {
+      .s-more {
+        grid-column: auto;
+        align-self: start;
+        font-size: clamp(10rem, 18vw, 24rem);
+        letter-spacing: -.05em;
+        justify-self: end;
+        gap: 2rem;
+        min-width: 40%;
+      }
+    }
+    .s-more span { position: relative; display: inline-block; }
+    .s-more span::after {
+      content: "";
+      position: absolute; left: .085em; right: 0; bottom: 0;
+      border-top: .0333em solid;
+      transform: scaleX(0);
+      transform-origin: left center;
+      transition: transform 1s var(--ease);
+    }
+    .service-item:hover .s-more span::after { transform: scaleX(1); }
+    .s-more svg {
+      height: .55em; width: .55em;
+      opacity: 0;
+      transform: translateX(-10%);
+      transition: opacity .4s, transform .8s var(--ease);
+    }
+    .service-item:hover .s-more svg { opacity: 1; transform: translateX(0); }
+
+    .agents-band {
+      background: var(--ink);
+      color: #fff;
+      text-align: center;
+      padding: 6rem 2.5rem 8rem;
+    }
+    .agents-band p {
+      font-weight: 500;
+      font-size: 2.8rem;
+      line-height: 1.25;
+      max-width: 28em;
+      margin: 0 auto 3rem;
+      letter-spacing: -.02em;
+    }
+    @media (min-width: 768px) { .agents-band p { font-size: 4.8rem; } }
+
+    /* ——— SUPPORT / FEATURES ——— */
+    .features {
+      background: var(--ink);
+      color: #fff;
+      padding: 4rem 0 8rem;
+    }
+    @media (min-width: 768px) { .features { padding: 8rem 0 15rem; } }
+    .features-top {
+      display: grid;
+      gap: 3rem;
+      margin-bottom: 4rem;
+    }
+    @media (min-width: 768px) {
+      .features-top {
+        grid-template-columns: 1.1fr .9fr;
+        gap: 6rem;
+        margin-bottom: 8rem;
+        align-items: end;
+      }
+    }
+    .features h2 {
+      font-weight: 500;
+      font-size: 4rem;
+      line-height: 1.05;
+      letter-spacing: -.03em;
+    }
+    @media (min-width: 768px) { .features h2 { font-size: 7.2rem; } }
+    .features-top p {
+      font-weight: 500;
+      font-size: 1.6rem;
+      line-height: 1.5;
+      color: rgba(255,255,255,.7);
+      max-width: 48rem;
+      margin-bottom: 2.4rem;
+    }
+    @media (min-width: 768px) { .features-top p { font-size: 2.4rem; } }
+    .feature-cards {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.2rem;
+    }
+    @media (min-width: 768px) {
+      .feature-cards { grid-template-columns: repeat(3, 1fr); gap: 1.6rem; }
+    }
+    .feature-card {
+      position: relative;
+      overflow: hidden;
+      border-radius: .8rem;
+      aspect-ratio: 3/4;
+      min-height: 42rem;
+    }
+    .feature-card img {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform .8s var(--ease);
+    }
+    .feature-card:hover img { transform: scale(1.05); }
+    .feature-card .shade {
+      position: absolute; inset: 0;
+      background: linear-gradient(180deg, transparent 30%, rgba(21,23,23,.85));
+    }
+    .feature-card .meta {
+      position: absolute; left: 2rem; right: 2rem; bottom: 2.4rem; z-index: 2;
+    }
+    .feature-card h3 {
+      font-weight: 500;
+      font-size: 2.4rem;
+      letter-spacing: -.02em;
+      margin-bottom: 1.2rem;
+    }
+    @media (min-width: 768px) { .feature-card h3 { font-size: 3.2rem; } }
+    .feature-card .more { font-size: 1.6rem; font-weight: 500; opacity: .85; }
+
+    /* ——— JOURNAL ——— */
+    .journal {
+      background: #fff;
+      padding: 6rem 0;
+    }
+    @media (min-width: 768px) { .journal { padding: 12rem 0; } }
+    .post {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2.4rem;
+      padding: 3rem 0;
+      border-bottom: 1px solid var(--hair);
+    }
+    .post:first-child { border-top: 1px solid var(--hair); }
+    @media (min-width: 768px) {
+      .post { grid-template-columns: 1fr 1.05fr; gap: 6rem; align-items: center; padding: 5rem 0; }
+    }
+    .post-date { font-size: 1.4rem; color: var(--em); margin-bottom: 1.2rem; font-weight: 500; }
+    .post h3 {
+      font-weight: 500;
+      font-size: 2.4rem;
+      letter-spacing: -.02em;
+      line-height: 1.15;
+      margin-bottom: 1.4rem;
+    }
+    @media (min-width: 768px) { .post h3 { font-size: 4rem; } }
+    .post p {
+      font-size: 1.6rem;
+      line-height: 1.5;
+      color: rgba(21,23,23,.55);
+      font-weight: 500;
+      margin-bottom: 2rem;
+      max-width: 48rem;
+    }
+    .post-thumb {
+      overflow: hidden; border-radius: .6rem; aspect-ratio: 16/10;
+    }
+    .post-thumb img { width: 100%; height: 100%; object-fit: cover; }
+
+    /* ——— OUTRO ——— */
+    .outro {
+      position: relative;
+      display: flex; align-items: center; justify-content: center;
+      height: 55rem;
+      color: #fff;
+      overflow: hidden;
+    }
+    @media (min-width: 768px) { .outro { height: 90rem; } }
+    .outro-bg { position: absolute; inset: 0; }
+    .outro-bg::after {
+      content: ""; position: absolute; inset: 0;
+      background: rgba(21,23,23,.8);
+    }
+    .outro-bg img { width: 100%; height: 100%; object-fit: cover; }
+    .outro-inner { position: relative; text-align: center; padding: 0 2.5rem; }
+    .outro h2 {
+      font-weight: 500;
+      font-size: 3rem;
+      line-height: 115%;
+      letter-spacing: -.01em;
+      text-wrap: balance;
+      margin-bottom: 3rem;
+    }
+    @media (min-width: 768px) { .outro h2 { font-size: 7.2rem; } }
+    .outro h2 .em { color: hsla(0,0%,100%,.7); }
+
+    /* ——— FOOTER ——— */
+    .footer {
+      background: var(--ink);
+      color: #fff;
+      padding: 6rem 0 4rem;
+    }
+    @media (min-width: 768px) { .footer { padding: 15rem 0 5rem; } }
+    .footer-grid {
+      display: grid;
+      gap: 5rem;
+      grid-template-areas: "newsletter" "links" "contact" "brand";
+    }
+    @media (min-width: 768px) {
+      .footer-grid {
+        grid-template-columns: 1.2fr .8fr;
+        grid-template-areas: "newsletter links" "contact contact" "brand brand";
+        justify-content: space-between;
+      }
+    }
+    .newsletter { grid-area: newsletter; }
+    .newsletter h4 {
+      font-size: 1.6rem; font-weight: 500; margin-bottom: 2rem;
+    }
+    @media (min-width: 768px) { .newsletter h4 { font-size: 2.4rem; } }
+    .newsletter-form {
+      display: flex; align-items: center;
+      border-bottom: 1px solid rgba(255,255,255,.35);
+      max-width: 42rem;
+      padding-bottom: .8rem;
+    }
+    .newsletter-form input {
+      flex: 1; background: transparent; border: 0; outline: 0;
+      color: #fff; font-size: 1.6rem; padding: .6rem 0;
+      font-family: inherit;
+    }
+    .newsletter-form input::placeholder { color: rgba(255,255,255,.35); }
+    .foot-links {
+      grid-area: links;
+      display: flex; gap: 6rem;
+    }
+    .foot-links ul { list-style: none; display: flex; flex-direction: column; gap: 1.2rem; }
+    .foot-links a { font-size: 1.6rem; font-weight: 500; color: rgba(255,255,255,.65); }
+    .foot-links a:hover { color: #fff; }
+    .foot-contact {
+      grid-area: contact;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2.4rem;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(255,255,255,.12);
+      font-size: 1.5rem;
+      color: rgba(255,255,255,.65);
+    }
+    @media (min-width: 768px) {
+      .foot-contact { grid-template-columns: repeat(3, 1fr); gap: 3rem; }
+    }
+    .foot-contact strong {
+      display: block; color: #fff; margin-bottom: .8rem;
+      font-size: 1.3rem; letter-spacing: .08em; text-transform: uppercase; font-weight: 600;
+    }
+    .foot-brand {
+      grid-area: brand;
+      margin-top: 4rem;
+      text-align: center;
+    }
+    .foot-brand svg {
+      width: min(100%, 140rem);
+      height: auto;
+      color: #fff;
+    }
+
+    .reveal { opacity: 0; transform: translateY(4rem); }
+
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { opacity: 1 !important; transform: none !important; }
+      html { scroll-behavior: auto; }
+    }
+  </style>
+</head>
+<body>
+  <header class="header is-transparent" id="header">
+    <div class="container header-inner">
+      <a class="logo" href="#top" aria-label="FIND">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 975 280">
+          <path fill="currentColor" d="M244.55 81.28H81.14v59.42h101.02v80.17H81.14v60.12H1V1h207.91z"></path>
+          <path fill="currentColor" d="M376.19 280.99h-141l61.26-140.29L235.2 1h141v279.99Z"></path>
+          <path fill="currentColor" d="M595.45 183.2V1h80.14v279.99H556.68l-73.33-152.93V281H403.2V1h110.33z"></path>
+          <path fill="currentColor" d="M836.06 1.01c77.3 0 139.94 62.69 139.94 140C976 218.33 913.35 281 836.06 281H702.61V1.01zm-52.82 80.17v119.44h44.58a59.5 59.5 0 0 0 42.21-17.5 59.7 59.7 0 0 0-42.2-101.94z"></path>
+        </svg>
+      </a>
+      <nav class="nav" aria-label="Primary">
+        <a href="#why"><span data-text="Search">Search</span></a>
+        <a href="#journal"><span data-text="Neighborhoods">Neighborhoods</span></a>
+        <a href="#own"><span data-text="Agents">Agents</span></a>
+        <a href="#own"><span data-text="Join">Join</span></a>
+        <a href="#journal"><span data-text="Paperwork">Paperwork</span></a>
+        <a href="#journal"><span data-text="Resources">Resources</span></a>
+        <a href="#features"><span data-text="About">About</span></a>
+      </nav>
+      <div class="header-actions">
+        <a class="btn btn-primary" href="https://app.findrealestate.com/login" target="_blank" rel="noopener">Sign In</a>
+        <button class="burger" id="burger" aria-label="Menu"><span></span></button>
+      </div>
+    </div>
+  </header>
+  <div class="mobile-nav" id="mobileNav">
+    <a href="#why">Search</a>
+    <a href="#journal">Neighborhoods</a>
+    <a href="#own">Agents</a>
+    <a href="#own">Join</a>
+    <a href="#journal">Paperwork</a>
+    <a href="#journal">Resources</a>
+    <a href="#features">About</a>
+    <a href="https://app.findrealestate.com/login">Sign In</a>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero" id="top">
+    <div class="hero-sticky">
+      <div class="hero-bg">
+        <div class="hero-back" id="heroBack">
+          <img src="assets/back.f53e9773.jpg" alt="" />
+        </div>
+        <div class="hero-house" id="heroHouse">
+          <img src="assets/house.png" alt="" />
+        </div>
+        <div class="hero-clouds" aria-hidden="true">
+          <div class="hero-cloud" id="cloudL"><img src="assets/cloud.c8800fa9.png" alt="" /></div>
+          <div class="hero-cloud" id="cloudR"><img src="assets/cloud.c8800fa9.png" alt="" /></div>
+        </div>
+        <div class="hero-composite" id="heroComposite">
+          <div class="hero-house">
+            <img src="assets/house.png" alt="" />
+          </div>
+        </div>
+        <div class="hero-logo-stroke" id="heroLogoStroke">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 975 280">
+            <path d="M244.55 81.28H81.14v59.42h101.02v80.17H81.14v60.12H1V1h207.91z"></path>
+            <path d="M376.19 280.99h-141l61.26-140.29L235.2 1h141v279.99Z"></path>
+            <path d="M595.45 183.2V1h80.14v279.99H556.68l-73.33-152.93V281H403.2V1h110.33z"></path>
+            <path d="M836.06 1.01c77.3 0 139.94 62.69 139.94 140C976 218.33 913.35 281 836.06 281H702.61V1.01zm-52.82 80.17v119.44h44.58a59.5 59.5 0 0 0 42.21-17.5 59.7 59.7 0 0 0-42.2-101.94z"></path>
+          </svg>
+        </div>
+        <div class="hero-smoke" id="heroSmoke">
+          <img src="assets/smoke.9f683cb4.png" alt="" />
+        </div>
+        <div class="hero-overlay"></div>
+      </div>
+      <div class="hero-content" id="heroContent">
+        <div>
+          <h1 class="hero-title">Find What Moves You</h1>
+          <p class="hero-sub">Expert agents. Real guidance. A clear path to find what’s next.</p>
+          <div class="hero-cta">
+            <a class="btn" href="#services">Find Properties</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY FIND -->
+  <section class="why" id="why">
+    <div class="container why-grid">
+      <div class="why-label reveal">
+        <span class="dim">Away FIND</span>
+        Why FIND
+      </div>
+      <div>
+        <h2 class="reveal">Your life’s changing. Don’t just find a place — find what’s next.</h2>
+        <p class="reveal">We help you move forward with clarity, confidence, and the right agent by your side.</p>
+      </div>
+    </div>
+    <div class="container">
+      <div class="city-strip reveal" id="cityStrip">
+        <img src="assets/back.f53e9773.jpg" alt="City skyline" />
+      </div>
+    </div>
+  </section>
+
+  <!-- IDENTITY -->
+  <section class="identity" id="identity">
+    <div class="container">
+      <h2 class="reveal">This isn’t just <span class="em">about real estate.</span></h2>
+      <div class="chevrons" id="chevrons">
+        <div class="chev"><img src="assets/1.e7a1ff18.jpg" alt="" /></div>
+        <div class="chev"><img src="assets/2.58bf2fb8.jpg" alt="" /></div>
+        <div class="chev"><img src="assets/1.52131ac7.jpg" alt="" /></div>
+        <div class="chev"><img src="assets/1.f6e8f2e8.jpg" alt="" /></div>
+      </div>
+      <p class="identity-body reveal">It’s about identity. Progress. Getting unstuck. You’re not just looking for a place. You’re looking for alignment. That’s what we help you find.</p>
+    </div>
+  </section>
+
+  <!-- REWIRED -->
+  <section class="rewired" id="rewired">
+    <div class="container rewired-grid">
+      <div class="rewired-left">
+        <h2 class="rewired-title reveal">
+          <div>Real Estate,</div>
+          <div class="em">Rewired.</div>
+        </h2>
+        <a class="btn btn-primary reveal" href="#services">Start Your Search</a>
+        <a class="for-agents reveal" href="#own">For Agents</a>
+      </div>
+      <div>
+        <div class="rewired-label reveal">Steps:</div>
+        <div class="step reveal" data-index="01">
+          <div>
+            <strong>Talk to a Real Human.</strong>
+            <p>We match you with an expert who actually listens.</p>
+          </div>
+        </div>
+        <div class="step reveal" data-index="02">
+          <div>
+            <strong>Get Clarity.</strong>
+            <p>We define what you really need, not just what’s available.</p>
+          </div>
+        </div>
+        <div class="step reveal" data-index="03">
+          <div>
+            <strong>Move Forward.</strong>
+            <p>We find what fits — and make it happen.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- OWN IT -->
+  <section class="own" id="own">
+    <div class="container own-grid">
+      <div class="own-visual" id="ownVisual">
+        <img src="assets/2.41633fa6.jpg" alt="Aerial neighborhood" />
+      </div>
+      <div>
+        <p class="eyebrow reveal">For Agents</p>
+        <h2 class="reveal">Don’t Rent Your Career. <span class="em">Own It.</span></h2>
+        <p class="reveal">At FIND, our agents don’t just work for the brand—they own a part of it. We give top performers real equity, so they’re invested in more than just your transaction—they’re invested in your outcome.</p>
+        <p class="reveal">Agents are certified, supported, and equipped to deliver five-star service—because their success is tied to yours. You’re not just here to close deals — you’re building a career, a life, a legacy.</p>
+        <a class="btn btn-primary reveal" href="https://www.findrealestate.com/join" target="_blank" rel="noopener">Join The Movement</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="testimonials" id="testimonials">
+    <div class="container">
+      <h2 class="reveal">Don’t Take <span class="em">Our Word for It.</span></h2>
+      <div class="testi-grid">
+        <div class="testi-photos reveal">
+          <img src="assets/1.e7a1ff18.jpg" alt="" />
+          <img src="assets/1.52131ac7.jpg" alt="" />
+        </div>
+        <div class="quote reveal">
+          <p>“Michael was a great realtor. Such a hard worker, dedicated to helping us find the perfect neighborhood, price point and home. He's a workaholic so he was available morning, noon and night. Tireless and dedicated. Would recommend him 100%!”</p>
+          <div class="who">Bernadette Hogan <span>/</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="services" id="services">
+    <div class="container">
+      <div class="services-head reveal">
+        <div class="services-caption">Services</div>
+        <h2 class="services-title">How FIND<br /><span class="em">Can Help You</span></h2>
+      </div>
+      <div class="service-items">
+        <button class="service-item" type="button">
+          <div class="service-bg"><img src="assets/buy.fed72bc8.jpg" alt="" /></div>
+          <div class="inner">
+            <div class="s-num"></div>
+            <p class="s-text">Buy smarter with expert agents backed by mortgage, legal, and appraisal pros—dialed in to get you the best deal, fast. We’ve done this more than 40,000 times since 2016, and we know what wins.</p>
+            <div class="s-more">
+              <span>Buy</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17L17 7M17 7H9M17 7V15"/></svg>
+            </div>
+          </div>
+        </button>
+        <button class="service-item" type="button">
+          <div class="service-bg"><img src="assets/sell.90b8e66b.jpg" alt="" /></div>
+          <div class="inner">
+            <div class="s-num"></div>
+            <p class="s-text">Sell fast, sell high. Your listing gets pro staging, strategic pricing, constant open houses, and agents who never stop working until the right buyer signs.</p>
+            <div class="s-more">
+              <span>Sell</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17L17 7M17 7H9M17 7V15"/></svg>
+            </div>
+          </div>
+        </button>
+        <button class="service-item" type="button">
+          <div class="service-bg"><img src="assets/rent.6736c732.jpg" alt="" /></div>
+          <div class="inner">
+            <div class="s-num"></div>
+            <p class="s-text">Access hidden rentals before they hit the market through agents who know every landlord in town. With decades of NYC experience, we unlock the best deals you won’t find online.</p>
+            <div class="s-more">
+              <span>Rent</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17L17 7M17 7H9M17 7V15"/></svg>
+            </div>
+          </div>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <section class="agents-band">
+    <p class="reveal"><span class="em">Our certified agents guide you through</span> every stage of real estate <span class="em">with expert knowledge and reliable support.</span></p>
+    <a class="btn btn-ghost reveal" href="#outro">Get Started with FIND</a>
+  </section>
+
+  <!-- SUPPORT -->
+  <section class="features" id="features">
+    <div class="container">
+      <div class="features-top">
+        <h2 class="reveal">Support Beyond<br /><span class="em">Buying</span><br /><span class="em">and Selling</span></h2>
+        <div>
+          <p class="reveal">The real estate market never stands still — and neither do we. <span class="em">Our experts offer continued support beyond the sale, helping you maximize your investment.</span></p>
+          <a class="btn btn-ghost reveal" href="#services">Discover Our Services</a>
+        </div>
+      </div>
+      <div class="feature-cards">
+        <article class="feature-card reveal">
+          <img src="assets/mortgage-services.e92904b1.jpg" alt="" />
+          <div class="shade"></div>
+          <div class="meta">
+            <h3>Mortgage Services</h3>
+            <a class="more" href="#">Learn More →</a>
+          </div>
+        </article>
+        <article class="feature-card reveal">
+          <img src="assets/property-management.7a9cbb34.jpg" alt="" />
+          <div class="shade"></div>
+          <div class="meta">
+            <h3>Property Management</h3>
+            <a class="more" href="#">Learn More →</a>
+          </div>
+        </article>
+        <article class="feature-card reveal">
+          <img src="assets/development.0de63e1b.jpg" alt="" />
+          <div class="shade"></div>
+          <div class="meta">
+            <h3>Construction and Real Estate Development</h3>
+            <a class="more" href="#">Learn More →</a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- JOURNAL -->
+  <section class="journal" id="journal">
+    <div class="container">
+      <article class="post reveal">
+        <div>
+          <div class="post-date">2026-09-02</div>
+          <h3>FIND Real Estate Featured in Redfin: What It Really Costs to Live in Harry Styles’ Neighborhood</h3>
+          <p>A look at neighborhood pricing and lifestyle in one of NYC’s most talked-about corners.</p>
+          <a class="btn btn-secondary" href="#">Read More →</a>
+        </div>
+        <div class="post-thumb"><img src="assets/4.ea5fa732.jpg" alt="" /></div>
+      </article>
+      <article class="post reveal">
+        <div>
+          <div class="post-date">2026-04-01</div>
+          <h3>Philly Real Estate: A Winter Chill or a Spring Opportunity?</h3>
+          <p>Seasonal shifts in Philadelphia’s market — and where buyers still find leverage.</p>
+          <a class="btn btn-secondary" href="#">Read More →</a>
+        </div>
+        <div class="post-thumb"><img src="assets/blog2.png" alt="" /></div>
+      </article>
+      <article class="post reveal">
+        <div>
+          <div class="post-date">2025-12-25</div>
+          <h3>The New Year’s Key: Why January is a Smart Time to Buy</h3>
+          <p>Less competition, motivated sellers, and a clearer path to closing in Q1.</p>
+          <a class="btn btn-secondary" href="#">Read More →</a>
+        </div>
+        <div class="post-thumb"><img src="assets/blog1.jpg" alt="" /></div>
+      </article>
+    </div>
+  </section>
+
+  <!-- OUTRO -->
+  <section class="outro" id="outro">
+    <div class="outro-bg">
+      <img src="assets/bg.ec610793.jpg" alt="" />
+    </div>
+    <div class="outro-inner">
+      <h2 class="reveal">Find You. <span class="em">We’ll Help You Get There.</span></h2>
+      <a class="btn btn-primary reveal" href="#top" style="background:#fff;color:#151717">Let’s Get Started</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer" id="footer">
+    <div class="container footer-grid">
+      <div class="newsletter">
+        <h4>Subscribe to our Newsletter!</h4>
+        <form class="newsletter-form" onsubmit="event.preventDefault()">
+          <input type="email" placeholder="Enter address" aria-label="Email" />
+          <button type="submit" aria-label="Subscribe">→</button>
+        </form>
+      </div>
+      <div class="foot-links">
+        <ul>
+          <li><a href="#why">Search</a></li>
+          <li><a href="#own">Agents</a></li>
+          <li><a href="#own">Join</a></li>
+          <li><a href="#features">About Us</a></li>
+          <li><a href="https://app.findrealestate.com/login">Agent Portal</a></li>
+        </ul>
+        <ul>
+          <li><a href="#">Facebook</a></li>
+          <li><a href="#">Instagram</a></li>
+          <li><a href="#">Youtube</a></li>
+          <li><a href="#">LinkedIn</a></li>
+        </ul>
+      </div>
+      <div class="foot-contact">
+        <div>
+          <strong>Head Office</strong>
+          5 West 37th Street, 12th Floor,<br />New York, NY 10018
+        </div>
+        <div>
+          <strong>Email Us</strong>
+          <a href="mailto:hello@findrealestate.com">hello@findrealestate.com</a>
+        </div>
+        <div>
+          <strong>Call Us</strong>
+          <a href="tel:+12129949965">+1 212 994 9965</a>
+        </div>
+      </div>
+      <div class="foot-brand">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 975 280">
+          <path fill="currentColor" d="M244.55 81.28H81.14v59.42h101.02v80.17H81.14v60.12H1V1h207.91z"></path>
+          <path fill="currentColor" d="M376.19 280.99h-141l61.26-140.29L235.2 1h141v279.99Z"></path>
+          <path fill="currentColor" d="M595.45 183.2V1h80.14v279.99H556.68l-73.33-152.93V281H403.2V1h110.33z"></path>
+          <path fill="currentColor" d="M836.06 1.01c77.3 0 139.94 62.69 139.94 140C976 218.33 913.35 281 836.06 281H702.61V1.01zm-52.82 80.17v119.44h44.58a59.5 59.5 0 0 0 42.21-17.5 59.7 59.7 0 0 0-42.2-101.94z"></path>
+        </svg>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    /*
+     * FIND homepage clone — motion matched to findrealestate.com
+     * Lenis + GSAP ScrollTrigger
+     * Hero: 500vh sticky stage — house scale/rise, clouds part, smoke rise,
+     * content fade, FIND wordmark composite reveal
+     */
+    (function () {
+      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      gsap.registerPlugin(ScrollTrigger);
+
+      const header = document.getElementById("header");
+      const burger = document.getElementById("burger");
+      const mobileNav = document.getElementById("mobileNav");
+      burger.addEventListener("click", () => mobileNav.classList.toggle("open"));
+      mobileNav.querySelectorAll("a").forEach((a) => a.addEventListener("click", () => mobileNav.classList.remove("open")));
+
+      let lenis;
+      if (!reduce && window.Lenis) {
+        lenis = new Lenis({
+          duration: 1.2,
+          easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+          smoothWheel: true,
+        });
+        lenis.on("scroll", ScrollTrigger.update);
+        gsap.ticker.add((t) => lenis.raf(t * 1000));
+        gsap.ticker.lagSmoothing(0);
+      }
+
+      function syncHeader() {
+        const y = window.scrollY || 0;
+        const darkEls = ["#services", ".agents-band", "#features", "#outro", "#footer"];
+        const lightEls = ["#why", "#identity", "#rewired", "#own", "#testimonials", "#journal"];
+        const under = (sel) => {
+          const el = document.querySelector(sel);
+          if (!el) return false;
+          const r = el.getBoundingClientRect();
+          return r.top < 80 && r.bottom > 80;
+        };
+        const dark = darkEls.some(under);
+        const light = lightEls.some(under);
+        header.classList.toggle("is-transparent", y < window.innerHeight * 0.45 && !dark && !light);
+        header.classList.toggle("is-dark", dark);
+        header.classList.toggle("is-solid", light && !dark);
+        if (y < window.innerHeight * 0.45) {
+          header.classList.add("is-transparent");
+          header.classList.remove("is-dark", "is-solid");
+        }
+      }
+
+      if (reduce) {
+        document.querySelectorAll(".reveal").forEach((el) => {
+          el.style.opacity = 1;
+          el.style.transform = "none";
+        });
+        window.addEventListener("scroll", syncHeader);
+        syncHeader();
+        return;
+      }
+
+      // Hero intro
+      gsap.set("#heroHouse", { xPercent: -50, left: "50%" });
+      gsap.from("#heroHouse", { scale: 1.1, duration: 5, ease: "expo.out" });
+      gsap.from("#cloudL", { y: "50%", duration: 3, ease: "expo.out" }, 0);
+      gsap.from("#cloudR", { y: "40%", duration: 3.2, ease: "expo.out" }, 0);
+      gsap.from("#heroContent > div > *", {
+        y: 40, opacity: 0, duration: 1.2, stagger: 0.15, ease: "power3.out", delay: 0.3,
+      });
+
+      // Hero scroll sequence (matches live sticky scrub)
+      const landscape = () => window.innerHeight < window.innerWidth;
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: ".hero",
+          start: "top top",
+          end: "bottom bottom",
+          scrub: true,
+          onUpdate: syncHeader,
+        },
+      });
+
+      tl.to("#heroHouse", {
+        y: landscape() ? "-40%" : "-20%",
+        scale: 1.25,
+        xPercent: -50,
+        duration: 1,
+        ease: "none",
+      }, 0)
+        .to("#heroSmoke", { y: "0%", duration: 1, ease: "none" }, 0)
+        .to("#cloudL", { x: "-15%", duration: 1, ease: "none" }, 0)
+        .to("#cloudR", { x: "15%", duration: 1, ease: "none" }, 0)
+        .to("#heroContent", { y: "20%", scale: 0.9, duration: 0.7, ease: "none" }, 0)
+        .to("#heroContent", { opacity: 0, duration: 0.25, ease: "none" }, 0.35)
+        .to("#heroLogoStroke", { opacity: 1, duration: 0.35, ease: "none" }, 0.45)
+        .to("#heroComposite", { opacity: 1, duration: 0.4, ease: "none" }, 0.55)
+        .to("#heroHouse", { opacity: 0, duration: 0.25, ease: "none" }, 0.55)
+        .to("#heroLogoStroke", { opacity: 0, duration: 0.3, ease: "none" }, 0.75)
+        .to(["#cloudL", "#cloudR", "#heroSmoke"], { opacity: 0.35, duration: 0.3, ease: "none" }, 0.7);
+
+      // Reveals
+      gsap.utils.toArray(".reveal").forEach((el) => {
+        gsap.to(el, {
+          opacity: 1,
+          y: 0,
+          duration: 1.05,
+          ease: "power3.out",
+          scrollTrigger: { trigger: el, start: "top 88%" },
+        });
+      });
+
+      gsap.from("#chevrons .chev", {
+        x: -60, opacity: 0.15, scale: 0.9,
+        stagger: 0.12, duration: 1.15, ease: "power3.out",
+        scrollTrigger: { trigger: "#chevrons", start: "top 80%" },
+      });
+
+      gsap.to("#cityStrip img", {
+        yPercent: -14, ease: "none",
+        scrollTrigger: { trigger: "#cityStrip", start: "top bottom", end: "bottom top", scrub: true },
+      });
+      gsap.to("#ownVisual img", {
+        scale: 1, ease: "none",
+        scrollTrigger: { trigger: "#ownVisual", start: "top 85%", end: "bottom top", scrub: true },
+      });
+
+      ScrollTrigger.create({ onUpdate: syncHeader });
+      syncHeader();
+    })();
+  </script>
+</body>
+</html>
